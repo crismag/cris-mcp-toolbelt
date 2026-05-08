@@ -1,0 +1,14 @@
+id: sandbox
+description: Isolated profile for testing unknown MCP servers.
+default_access: read-only
+allow_unknown_mcp: true
+filesystem:
+  mode: read-only
+  allowed_paths:
+    - "{TARGET_WORKSPACE}"
+database:
+  mode: read-only
+online_mcp_policy:
+  trusted_provider_only: false
+  retrieval_only_default: true
+write_actions: disabled
