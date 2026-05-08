@@ -25,6 +25,7 @@ Every new `catalog/*.yaml` entry must include:
 
 Contributors must:
 
+- Follow `docs/ONLINE_MCP_POLICY.md` for online MCP usage and catalog additions.
 - Explain data exposure risks.
 - Confirm path restrictions for local file access.
 - Confirm read-only database defaults.
