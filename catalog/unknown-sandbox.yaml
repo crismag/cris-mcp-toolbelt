@@ -1,0 +1,17 @@
+id: unknown-sandbox
+name: Unknown MCP (Sandbox Only)
+category: unknown
+description: Placeholder entry for unknown/unreviewed MCP servers.
+provider: unknown
+source_url: unknown
+trust_level: untrusted
+default_access: read-only
+profile_allowlist:
+  - sandbox
+security_notes:
+  threats:
+    - Unverified behavior and data handling
+  mitigations:
+    - Sandbox-only profile
+    - No write actions
+    - Manual security review required before promotion

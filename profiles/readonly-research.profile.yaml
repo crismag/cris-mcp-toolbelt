@@ -1,0 +1,14 @@
+id: readonly-research
+description: Default safe profile for public research workflows.
+default_access: read-only
+allow_unknown_mcp: false
+filesystem:
+  mode: read-only
+  allowed_paths:
+    - "{TARGET_WORKSPACE}"
+database:
+  mode: read-only
+online_mcp_policy:
+  trusted_provider_only: true
+  retrieval_only_default: true
+write_actions: disabled

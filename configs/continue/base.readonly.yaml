@@ -1,0 +1,7 @@
+version: 1
+profile: readonly-research
+mcpServers:
+  - ref: trusted-retrieval
+    mode: read-only
+  - ref: local-files
+    mode: read-only

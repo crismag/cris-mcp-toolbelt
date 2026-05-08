@@ -1,0 +1,7 @@
+version: 1
+profile: sandbox
+mcpServers:
+  - ref: unknown-sandbox
+    mode: restricted
+  - ref: local-files
+    mode: read-only

@@ -1,0 +1,18 @@
+id: local-files
+name: Local Filesystem MCP
+category: local-filesystem
+description: Path-restricted local file operations for target workspace.
+provider: local
+source_url: local
+trust_level: trusted
+default_access: read-only
+profile_allowlist:
+  - readonly-research
+  - sandbox
+  - writer
+security_notes:
+  threats:
+    - Over-broad file access
+  mitigations:
+    - Allowed path restrictions to {TARGET_WORKSPACE}
+    - Read-only default

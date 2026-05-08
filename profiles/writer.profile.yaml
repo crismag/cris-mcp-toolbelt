@@ -1,0 +1,14 @@
+id: writer
+description: Explicit write-enabled profile for controlled workflows.
+default_access: limited-write
+allow_unknown_mcp: false
+filesystem:
+  mode: read-write
+  allowed_paths:
+    - "{TARGET_WORKSPACE}"
+database:
+  mode: read-only
+online_mcp_policy:
+  trusted_provider_only: true
+  retrieval_only_default: false
+write_actions: explicit-only
