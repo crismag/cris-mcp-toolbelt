@@ -11,6 +11,13 @@ source_url: https://github.com/modelcontextprotocol/servers
 license: MIT
 transport: stdio
 auth_required: false
+runtime:
+  command: uvx
+  args:
+    - mcp-server-git
+    - "--repository"
+    - "{WORKSPACE_ROOT}"
+  env: {}
 capability_class: modifying
 capabilities:
   - git_status

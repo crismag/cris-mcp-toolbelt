@@ -1,206 +1,124 @@
 # Repository Improvement Guide
 
-This guide describes the next phases of work for `cris-mcp-toolbelt`. It is
+This guide describes the next useful work for `cris-mcp-toolbelt`. It is
 prioritized guidance, not implementation code. Use it together with
 [ROADMAP.md](ROADMAP.md) and [REPOSITORY_PRINCIPLES.md](REPOSITORY_PRINCIPLES.md).
-A detailed phase breakdown is maintained in the project's internal development
-plans.
 
 ## Current State Summary
 
-The repository is an early documentation-first skeleton:
+The v0.1.0 catalog and governance foundation is released:
 
-- `profiles/` contains read-only, sandbox, and writer profiles only.
-- `catalog/` contains example entries as flat files, not under `servers/`.
-- `configs/continue/` contains Continue client templates only.
-- `scripts/` contains `doctor.sh`, `enable_for_workspace.sh`,
-  `test_mcp_servers.sh`, and `validate_catalog.py`.
-- `docs/` contains architecture, security, governance, setup, and the seven
-  core context documents.
-- Catalog validation is dependency-free and uses substring matching.
-- There is no continuous integration and no contribution templates.
+- `catalog/schema.json` and 13 catalog entries live under `catalog/servers/`.
+- All seven safety profiles exist and validate against `profiles/schema.json`.
+- Catalog validation, profile validation, policy linting, configuration
+  rendering, workspace enablement, and CI are in place.
+- Documentation covers governance, security, local Ollama workflows, database
+  access, client setup, and contribution/release expectations.
+- First-party server implementations are isolated under `servers/`; the
+  repository's core identity remains a catalog + governance hub.
 
-The structure is sound; the gap is depth, schema rigor, and validation.
+Current development is focused on making local coding agents more capable with
+the optional `command-runner-controlled` first-party server. It has unit-tested
+allowlisted command execution, dry-run support, workspace restrictions,
+environment filtering, and JSONL audit records, but it should not be promoted
+in the catalog until it is verified through a real MCP client.
 
 ## Immediate Issues to Fix
 
-- Long single-line Markdown, YAML, and script content should be normalized to
-  readable, consistently wrapped formatting.
-- Catalog entries are illustrative examples only and are not yet organized under
-  `catalog/servers/` or backed by a schema.
-- Catalog validation matches strings rather than parsing structure, so it can
-  pass malformed YAML.
-- `configs/` covers only one client.
-- The profile set is incomplete: four of the seven target profiles are missing
-  (`local-inspect`, `executor`, `admin-controlled`, and a documented
-  `local-dev`).
-- Documentation should consistently use controlled-capability language rather
-  than alarmist framing.
+- Keep README and docs status text aligned with the v0.1.0 release and the
+  v0.2.0 "Usable Local Coding Assistant Stack" roadmap.
+- Run `python3 scripts/check_docs_links.py` locally and in CI so public
+  Markdown links stay valid as docs are added, renamed, or reorganized.
+- Integration-test `servers/command-runner-controlled` through a real MCP
+  client using `TOOLBELT_WORKSPACE_ROOT`.
+- Verify YAML command policies and JSONL audit logs in a real workspace.
+- Keep `command-runner-controlled` at `review_status: proposed` and
+  `trust_level: unknown` until the MCP-client verification is complete.
 
-## Priority 1: Formatting and Repository Hygiene
+## Priority 1: Documentation and Public Consistency
 
-- Normalize line length and wrapping across `docs/`, `catalog/`, `profiles/`,
-  and `configs/`.
-- Ensure every file ends with a single newline and uses consistent indentation.
-- Confirm `.gitignore` excludes `.env` and other local-only files.
-- Improve `README.md` to state purpose, the configurable-control philosophy,
-  safety posture, quick start, and links to `docs/`.
-- Add a `catalog/README.md` explaining the catalog layout and schema.
-- Replace any alarmist capability framing with controlled-capability language.
+- Keep [README.md](../README.md), [CONTEXT.md](CONTEXT.md),
+  [ROADMAP.md](ROADMAP.md), and this guide synchronized.
+- Keep public docs free of links into `dev_plans/` or other local-only planning
+  material.
+- Prefer controlled-capability language: use `controlled_capabilities`, avoid
+  alarmist framing, and describe profiles as declarative governance rather than
+  runtime enforcement.
+- Keep first-party server docs clear that `servers/` is optional and isolated
+  from the catalog/profile tooling.
 
-## Priority 2: Catalog Schema and Validation
+## Priority 2: Command Runner Verification
 
-Add a formal `catalog/schema.json` describing required fields, optional fields,
-and allowed enum values. Each catalog entry should carry:
+- Install `servers/command-runner-controlled` in a clean environment.
+- Run its unit tests from the server directory.
+- Configure an MCP client with `TOOLBELT_WORKSPACE_ROOT`.
+- Configure a workspace-local command policy at
+  `.cris-mcp-toolbelt/command-runner.config.yaml`.
+- Exercise `list_allowed_commands`, `dry_run_command`,
+  `run_allowed_command`, and `list_audit_events`.
+- Confirm non-allowlisted commands, blocked patterns, and out-of-workspace
+  working directories are refused.
 
-```yaml
-id:
-name:
-description:
-category:
-provider:
-homepage:
-source_url:
-license:
-transport:
-auth_required:
-capabilities:
-controlled_capabilities:
-capability_class:
-default_access:
-allowed_profiles:
-activation_policy:
-scope_controls:
-data_exposure:
-trust_level:
-review_status:
-security_notes:
-tags:
-```
+## Priority 3: Catalog Promotion Readiness
 
-Allowed enum values:
+- Keep `command-runner-controlled` at `review_status: proposed` and
+  `trust_level: unknown` until it is complete, tested, documented, and verified
+  deployable.
+- Replace `example.com` placeholders with real repository paths or release
+  URLs only after verification.
+- Keep the catalog allowlist, blocked patterns, and rendered runtime config in
+  sync with the server defaults.
 
-- `capability_class`: `passive`, `interactive`, `modifying`, `executing`,
-  `administrative`.
-- `default_access`: `disabled`, `readonly`, `inspect`, `enabled`, `sandbox`,
-  `write_opt_in`, `executor_opt_in`, `admin_opt_in`.
-- `trust_level`: `unknown`, `experimental`, `community`, `trusted`.
-- `review_status`: `proposed`, `reviewed`, `approved`, `deprecated`.
+## Priority 4: Test and CI Coverage
 
-Then:
+- Keep root tests scoped to catalog, profile, policy, and public-safety checks.
+- Keep first-party server tests self-contained under each server directory.
+- Run documentation link checking in CI with
+  `python3 scripts/check_docs_links.py`.
+- Consider a future CI job for first-party servers once their dependencies are
+  intentionally included in CI.
 
-- Move catalog entries into `catalog/servers/` (one file per server).
-- Upgrade `validate_catalog.py` from substring matching to real YAML parsing
-  and schema validation, with clear per-file error messages, enum validation,
-  required-field validation, and profile-reference validation.
-- Add `policy_lint.py` to check capability and activation consistency — for
-  example, a `modifying` capability that is not gated to a write-capable
-  profile, or a high-impact entry with no `scope_controls`.
+## Priority 5: PostgreSQL Memory Server Verification
 
-## Priority 3: Safety Profiles
+- Install `servers/toolbelt-postgres-memory` in a clean environment.
+- Run its unit tests from the server directory.
+- Start a local PostgreSQL instance, set `TOOLBELT_POSTGRES_URL`, and verify
+  schema initialization.
+- Exercise all four tools through an MCP-capable client:
+  `create_memory_record`, `search_memory_records`, `create_audit_event`, and
+  `list_audit_events`.
+- Confirm blocked record kinds and secret-like content are refused before
+  storage.
 
-- Add the missing profiles so all seven exist: `readonly-research`,
-  `local-inspect`, `local-dev`, `sandbox`, `writer`, `executor`,
-  `admin-controlled`.
-- Give every profile a consistent field set so they can be compared and
-  validated against a shared shape.
-- Document each profile's intent, defaults, and intended use.
-- Keep defaults conservative: passive capability may be enabled where low-risk;
-  modifying requires `writer` or `admin-controlled`; executing requires
-  `executor` or `writer`; administrative is modeled but not enabled by default.
+## Priority 6: Memory-Backed Audit Integration
 
-## Priority 4: Scripts and Tooling
+Later, connect the memory/audit server to the profile model:
 
-- Keep scripts small, dependency-light, and POSIX-friendly where practical.
-- Upgrade `validate_catalog.py` and add `policy_lint.py` (see Priority 2).
-- Add `render_config.py` to render a client configuration from a profile plus
-  selected catalog entries, with dry-run and backup-before-overwrite behavior
-  (scheduled later — see roadmap).
-- Add database helper script stubs (`init_toolbelt_db.py`,
-  `inspect_db_schema.py`, `export_schema_context.py`, `validate_db_profile.py`)
-  as the database strategy matures.
-- Ensure each script prints a clear usage message and exits non-zero on error.
+- Record high-impact tool activations by workspace and profile.
+- Add the planned `workspaces`, `model_usage`, and `database_connections`
+  tables and matching tools.
+- Document how the audit workflow complements declarative
+  `activation_policy` metadata.
+- Keep the memory backend opt-in and keep file-based memory as the
+  zero-dependency default.
 
-## Priority 5: Documentation Expansion
+## Acceptance Criteria for the Next Release
 
-- Keep the seven core context documents current:
-  [CONTEXT.md](CONTEXT.md), [IMPROVEMENT_GUIDE.md](IMPROVEMENT_GUIDE.md),
-  [REPOSITORY_PRINCIPLES.md](REPOSITORY_PRINCIPLES.md),
-  [CONTRIBUTOR_GUIDANCE.md](CONTRIBUTOR_GUIDANCE.md),
-  [MAINTAINER_GUIDANCE.md](MAINTAINER_GUIDANCE.md),
-  [AI_AGENT_GUIDE.md](AI_AGENT_GUIDE.md), and [ROADMAP.md](ROADMAP.md).
-- Add database strategy documentation (PostgreSQL as the preferred internal
-  memory backend; PostgreSQL, MySQL/MariaDB, and SQLite as controlled
-  application-database connectors) and a database security model.
-- Add local Ollama workflow documentation and a model routing guide.
-- Cross-link related documents instead of duplicating content.
-
-## Priority 6: Examples
-
-- Add example walkthroughs per profile: read-only research, local inspect,
-  local development, sandbox, writer, and executor.
-- Add a local Ollama development workflow example and controlled database
-  inspection examples.
-- Each example uses placeholders only, avoids destructive commands, and explains
-  what capability is granted and why.
-
-## Priority 7: Tests and CI
-
-- Add a `tests/` directory with catalog validation, profile validation, and
-  policy lint tests, plus valid and invalid fixtures.
-- Add a CI workflow under `.github/` that runs catalog validation, schema
-  checks, policy linting, shell and Python syntax checks, and a private-leakage
-  scan on every pull request.
-- CI should fail on validation errors so unsafe or malformed entries cannot
-  merge.
-
-## Priority 8: Community Contribution Readiness
-
-- Add issue templates (new MCP server, profile request, security review).
-- Add a pull request template that includes the capability-control checklist.
-- Add a release checklist describing the steps to cut a tagged version.
-- Ensure [CONTRIBUTING.md](../CONTRIBUTING.md) points to
-  [CONTRIBUTOR_GUIDANCE.md](CONTRIBUTOR_GUIDANCE.md).
-
-## Suggested Implementation Order
-
-1. Priority 1 — formatting, hygiene, and controlled-capability language.
-2. Priority 2 — catalog schema, `catalog/servers/`, and validation.
-3. Priority 3 — the full set of seven profiles.
-4. Priority 7 — CI, so validation runs automatically from here on.
-5. Priority 5 — database strategy and local Ollama documentation.
-6. Priority 6 — examples per profile.
-7. Priority 8 — contribution templates and release checklist.
-8. Priority 4 — additional tooling (`render_config.py`, database stubs).
-
-## Acceptance Criteria for v0.1.0
-
-- [ ] Formatting is consistent and content is public-safe across the repository.
-- [ ] `README.md` states purpose, configurable-control philosophy, and quick
-      start.
-- [ ] `catalog/schema.json` exists and describes all fields and enums.
-- [ ] Catalog entries live under `catalog/servers/` and validate against schema.
-- [ ] Core catalog entries declare `capability_class`,
-      `controlled_capabilities`, `activation_policy`, and `scope_controls`.
-- [ ] All seven profiles exist with a consistent, validated shape.
-- [ ] `validate_catalog.py` performs real YAML and schema validation, and
-      `policy_lint.py` checks capability and activation consistency.
-- [ ] Database strategy and local Ollama workflow docs exist.
-- [ ] CI runs validation on every pull request and fails on errors.
-- [ ] Issue templates, a PR template, and a release checklist exist.
+- [ ] Documentation accurately describes the released v0.1.0 foundation and
+      current v0.2.0 work.
+- [ ] Documentation link checking passes locally and in CI.
+- [ ] `command-runner-controlled` is integration-tested through an MCP client.
+- [ ] `docs/USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md` matches the verified
+      Continue/Ollama flow.
+- [ ] Catalog metadata matches what is actually implemented and verified.
 - [ ] No private references, secrets, write-by-default behavior, or destructive
-      example commands anywhere.
+      example commands are introduced.
 
 ## Deferred Improvements
 
-These are intentionally out of scope for v0.1.0:
-
-- The full configuration renderer (`render_config.py` beyond stubs).
-- Real database migrations and production database support.
-- A full shell-execution MCP implementation.
-- Automatic GitHub mutation and cloud deployment actions.
-- Package publishing and administrative operations.
+- Profile-integrated, memory-backed audit workflows.
+- `pgvector`-based retrieval for the memory backend.
 - A community registry workflow and trusted-provider index.
-- Advanced local agent orchestration (model router, run audit records).
+- Advanced local agent orchestration, model routing, and run audit records.
 
 See [ROADMAP.md](ROADMAP.md) for where each deferred item is scheduled.

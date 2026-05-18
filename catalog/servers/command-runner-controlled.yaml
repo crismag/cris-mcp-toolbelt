@@ -1,11 +1,11 @@
 id: command-runner-controlled
 name: Command Runner Controlled MCP
 description: >-
-  Planned first-party server that runs development commands under strict
-  profile, allowlist, scope, and audit controls. Disabled by default; only
-  allowlisted commands are runnable, and only through an executor or writer
-  profile. This entry is proposed and the server is not yet complete or
-  deployable.
+  First-party server that runs development commands under strict profile,
+  allowlist, scope, and audit controls. Disabled by default; only allowlisted
+  commands are runnable, and only through an executor or writer profile. This
+  entry remains proposed until the server is verified through a real MCP
+  client.
 category: command-execution
 provider: cris-mcp-toolbelt project
 homepage: https://example.com/cris-mcp-toolbelt
@@ -13,6 +13,14 @@ source_url: https://example.com/cris-mcp-toolbelt
 license: MIT
 transport: stdio
 auth_required: false
+runtime:
+  command: python
+  args:
+    - "-m"
+    - command_runner_controlled.server
+    - "--config"
+    - "{WORKSPACE_ROOT}/.cris-mcp-toolbelt/command-runner.config.yaml"
+  env: {}
 capability_class: executing
 capabilities:
   - command_execution
@@ -46,9 +54,20 @@ scope_controls:
   workspace_required: true
   command_allowlist:
     - "python -m pytest"
+    - "python3 -m pytest"
+    - "pytest"
     - "python scripts/validate_catalog.py"
+    - "python3 scripts/validate_catalog.py"
+    - "python scripts/validate_profiles.py"
+    - "python3 scripts/validate_profiles.py"
+    - "python scripts/policy_lint.py"
+    - "python3 scripts/policy_lint.py"
+    - "python scripts/check_docs_links.py"
+    - "python3 scripts/check_docs_links.py"
     - "npm test"
     - "npm run lint"
+    - "npm run typecheck"
+    - "npm run build"
     - "shellcheck"
     - "yamllint"
     - "git status"

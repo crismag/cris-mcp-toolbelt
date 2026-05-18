@@ -1,7 +1,13 @@
-version: 1
-profile: writer
 mcpServers:
-  - ref: public-fetch
-    mode: read-only
-  - ref: filesystem-controlled
-    mode: read-write
+  filesystem-controlled:
+    command: npx
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem"
+      - "{WORKSPACE_ROOT}"
+  git-controlled:
+    command: uvx
+    args:
+      - mcp-server-git
+      - "--repository"
+      - "{WORKSPACE_ROOT}"

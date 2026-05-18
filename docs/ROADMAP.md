@@ -1,143 +1,125 @@
 # Roadmap
 
-This roadmap describes the planned evolution of `cris-mcp-toolbelt` from a
-documentation-first skeleton into usable, community-ready tooling. It is a
-direction, not a guarantee of dates.
+This roadmap describes the planned evolution of `cris-mcp-toolbelt`. It is a
+direction, not a guarantee of dates. See [CONTEXT.md](CONTEXT.md) and
+[IMPROVEMENT_GUIDE.md](IMPROVEMENT_GUIDE.md) for context.
 
-The roadmap is organized around the eight development phases. A more detailed
-activity breakdown is maintained in the project's internal development plans;
-see also [CONTEXT.md](CONTEXT.md) and [IMPROVEMENT_GUIDE.md](IMPROVEMENT_GUIDE.md).
+The repository's core identity is a **catalog + governance hub**. First-party
+MCP servers are an optional, isolated layer under `servers/` — see
+[../servers/README.md](../servers/README.md).
 
 ## Release Principle
 
-An MCP server is published in the catalog only when it is complete and
-functional for deployment. In-progress work stays out of public releases until
+A first-party MCP server is promoted in the catalog (from `proposed` /
+`unknown` toward `experimental` and beyond) only when it is complete, tested,
+documented, and deployable. In-progress work stays out of public releases until
 it is done.
 
-## Phase Overview
+## Milestone Overview
 
-| Phase | Name | Main outcome |
+| Version | Theme | Status |
 | --- | --- | --- |
-| Phase 0 | Repository Alignment and Hygiene | Clean, readable, public-safe foundation |
-| Phase 1 | Catalog Schema and Core MCP Entries | First real MCP catalog with capability metadata |
-| Phase 2 | Profiles and Capability Governance | Profile-gated activation model |
-| Phase 3 | Local Ollama Development Workflow | Local model and MCP workflow docs and examples |
-| Phase 4 | Database Memory and Application DB Access | Database strategy and controlled access |
-| Phase 5 | Config Rendering and Workspace Enablement | Generate client configs from profiles |
-| Phase 6 | Tests, CI, and Release Readiness | Contribution-ready validation layer |
-| Phase 7 | Advanced Local Agent Orchestration | Model routing, audit records, task workflows |
+| v0.1.0 | Catalog and governance foundation | Released |
+| v0.2.0 | Usable Local Coding Assistant Stack | In progress |
+| v0.3.0 | First-party PostgreSQL memory MCP | In progress |
+| v0.4.0 | Memory-backed audit and profile integration | Planned |
 
-## v0.1.0 — Safety-First Foundation
+## v0.1.0 — Catalog and Governance Foundation
 
-**Goal.** Turn the skeleton into a consistent, validated, contributable
-foundation with conservative defaults. Covers Phases 0–2 in full and the
-documentation portions of Phases 3, 4, and 6.
+**Status: released.**
 
-**Scope.**
-- Repository cleanup, hygiene, and controlled-capability language.
-- README improvement.
-- `catalog/schema.json` and catalog entries under `catalog/servers/`.
-- Core catalog entries for the target MCP servers.
-- The seven profiles.
-- Catalog validation and policy linting.
-- Database strategy documentation.
-- Local Ollama workflow documentation.
-- Basic examples.
-- CI validation.
-- Release checklist.
+**Goal.** A consistent, validated, contributable foundation with conservative
+defaults.
 
-**Acceptance criteria.**
-- All catalog entries validate against the schema and pass policy linting in CI.
-- Core entries declare `capability_class`, `controlled_capabilities`,
-  `activation_policy`, and `scope_controls`.
-- All seven profiles validate and keep conservative defaults.
-- CI fails on validation errors.
-- Every published catalog entry describes a complete, deployable server.
-- No private references, secrets, or capability enabled unsafely by default.
-- The seven core context documents are present and current.
+**Delivered.**
+- `catalog/schema.json` and 13 catalog entries under `catalog/servers/`.
+- The seven safety profiles with a profile schema.
+- Catalog validation, profile validation, and policy linting.
+- Configuration rendering (`render_config.py`) and workspace enablement.
+- Local Ollama workflow and database strategy documentation.
+- Tests, CI, contribution templates, and a release checklist.
+- The seven core context documents.
 
-**Deferred.** The full configuration renderer, real database migrations, a full
-shell-execution MCP, automatic GitHub mutation, production database support,
-cloud deployment actions, package publishing, and administrative operations.
+## v0.2.0 — Usable Local Coding Assistant Stack
 
-## v0.2.0 — Catalog Expansion and Local Ollama Workflow
+**Status: in progress.**
 
-**Goal.** Broaden the catalog with completed, reviewed MCP servers and make the
-local Ollama development workflow practical. Advances Phases 3 and 4.
+**Goal.** Make the repo produce a working local MCP stack for
+VSCode/Continue/Ollama-based coding assistance, with a safe feedback loop:
+edit, run checks, inspect failures, fix, and rerun.
 
 **Scope.**
-- Additional reviewed catalog entries across capability categories.
-- Local Ollama MCP stack documentation and a model routing guide.
-- Continue-compatible configuration guidance and a local-dev example.
-- Database security model and controlled application-database inspection
-  examples for PostgreSQL, MySQL/MariaDB, and SQLite.
+- Real `render_config.py` output for Continue.
+- Real rendered examples for `local-dev`, `readonly-research`, and `executor`.
+- The `command-runner-controlled` server: allowlisted local command execution
+  with four tools — `list_allowed_commands`, `dry_run_command`,
+  `run_allowed_command`, `list_audit_events`.
+- Workspace-root restriction, no shell-by-default behavior, blocked destructive
+  patterns, timeout controls, dry-run mode, filtered environment, command
+  policy file support, and JSONL audit records.
+- Tests for allowed commands, blocked commands, outside-workspace paths, and
+  audit recording.
+- Documentation for using the stack with a local Ollama coding assistant.
 
 **Acceptance criteria.**
-- Every catalog entry has verifiable provenance, a stated license, and a
-  complete, deployable server.
-- Trust levels are applied via the lifecycle in
-  [MAINTAINER_GUIDANCE.md](MAINTAINER_GUIDANCE.md).
-- Application database access defaults to read-only; mutation requires `writer`
-  or `admin-controlled`.
+- The repository keeps its catalog + governance identity; first-party server
+  support is optional and isolated.
+- Continue configs render real MCP `command` / `args` / `env` blocks.
+- The server is complete, tested, documented, and verified through a real MCP
+  client against a local workspace.
+- The `command-runner-controlled` catalog entry is promoted from
+  `proposed`/`unknown` to `experimental` once the server is working, with its
+  `source_url` and `homepage` updated to the real implementation.
 
-**Deferred.** Automated config rendering and capability-drift linting beyond
-basic policy lint.
+**Deferred.** Memory-backed audit integration.
 
-## v0.3.0 — Config Rendering and Workspace Enablement
+## v0.3.0 — First-Party PostgreSQL Memory MCP
 
-**Goal.** Generate client configuration from a profile plus selected catalog
-entries instead of hand-maintained templates. Delivers Phase 5.
+**Status: in progress.**
+
+**Goal.** Build the PostgreSQL-backed memory and audit server as an optional
+toolbelt-owned persistence backend.
 
 **Scope.**
-- `render_config.py` with dry-run mode and backup-before-overwrite behavior.
-- A defined config template format and generic plus Continue templates.
-- An improved `enable_for_workspace.sh` with profile and capability-mode
-  selection and a clear activation summary.
+- The `toolbelt-postgres-memory` server: PostgreSQL-backed memory and audit
+  with four tools — `create_memory_record`, `search_memory_records`,
+  `create_audit_event`, `list_audit_events`.
+- Schema initialization SQL and safe local development configuration.
+- Record-safety guards (no secrets, credentials, private keys, or access
+  tokens stored).
+- Unit tests and an example MCP client configuration.
 
 **Acceptance criteria.**
-- Rendered configs never grant capability beyond the referenced profile.
-- Rendering is reproducible, supports dry-run, fails safely, and is validated in
-  CI.
+- The server is complete, tested, documented, and verified deployable against
+  a real PostgreSQL instance.
+- The `toolbelt-postgres-memory` catalog entry is promoted from
+  `proposed`/`unknown` to `experimental` once the server is working, with its
+  `source_url` and `homepage` updated to the real implementation.
 
-**Deferred.** Advanced orchestration and audit tooling.
+**Deferred.** Profile integration and a memory-backed audit workflow.
 
-## v0.4.0 — Database Memory and Helper Tooling
+## v0.4.0 — Memory-Backed Audit and Profile Integration
 
-**Goal.** Add database-backed memory and reviewed helper tooling. Completes
-Phase 4 tooling.
+**Status: planned.**
+
+**Goal.** Connect the memory/audit server to the profile model so that tool
+activations are auditable in practice.
 
 **Scope.**
-- PostgreSQL documented as the preferred internal memory backend, with a
-  database initialization script.
-- Database helper scripts (`inspect_db_schema.py`, `export_schema_context.py`,
-  `validate_db_profile.py`).
-- A small set of documented, optional helper tools under `tools/`.
+- Integrate audit events with the seven profiles: high-impact activations are
+  recorded through the memory/audit server.
+- Add the planned `workspaces`, `model_usage`, and `database_connections`
+  tables and the tools that manage them.
+- Document the memory-backed audit workflow and how it complements the
+  declarative `activation_policy` in the catalog.
 
 **Acceptance criteria.**
-- Database-backed memory is opt-in; file-based memory remains the zero-dependency
-  default.
-- Helper tools default to safe behavior and are profile-aware.
-- No credentials are committed; production access is not enabled by default.
+- Audit events can be recorded and reviewed per workspace and per profile.
+- The memory backend remains opt-in; file-based memory stays the
+  zero-dependency default.
+- No credentials are stored; blocked record types remain refused.
 
-**Deferred.** Advanced local agent orchestration.
-
-## v0.5.0 — Advanced Local Agent Orchestration
-
-**Goal.** Prepare higher-level local AI orchestration using models, memory,
-MCPs, and audit records. Delivers Phase 7.
-
-**Scope.**
-- A model router helper and model role assignments.
-- Activity and run audit records.
-- Task profile, project memory, and validation command examples.
-- Repo review and implementation planning workflow examples.
-
-**Acceptance criteria.**
-- Local models have clear role assignments.
-- Tool usage is profile-gated and high-impact actions are auditable.
-- No unrestricted automation is enabled.
-
-**Deferred.** A community registry workflow.
+**Deferred.** Advanced orchestration.
 
 ## Future Ideas
 
@@ -145,6 +127,7 @@ These are not yet scheduled and may change or be dropped:
 
 - A community-maintained catalog submission and review workflow.
 - A community-maintained trusted-provider index.
+- Advanced local agent orchestration — model routing and run audit records.
+- `pgvector`-based retrieval for the memory backend.
 - Richer local-first AI workflow starter packs.
 - Additional client configuration targets as the ecosystem evolves.
-- Optional metrics on catalog coverage and profile usage.

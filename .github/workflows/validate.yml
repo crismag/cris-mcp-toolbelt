@@ -18,7 +18,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: python -m pip install --upgrade pip pyyaml jsonschema pytest
+        run: python -m pip install --upgrade pip pyyaml jsonschema pytest mcp
 
       - name: Validate catalog
         run: python3 scripts/validate_catalog.py
@@ -28,6 +28,15 @@ jobs:
 
       - name: Policy lint
         run: python3 scripts/policy_lint.py
+
+      - name: Check documentation links
+        run: python3 scripts/check_docs_links.py
+
+      - name: Render config dry-runs
+        run: |
+          python3 scripts/render_config.py --profile readonly-research --client generic --dry-run
+          python3 scripts/render_config.py --profile local-dev --client continue --workspace-root "$PWD" --dry-run
+          python3 scripts/render_config.py --profile executor --client continue --workspace-root "$PWD" --dry-run
 
       - name: Doctor
         run: bash scripts/doctor.sh
@@ -49,3 +58,8 @@ jobs:
 
       - name: Run test suite
         run: python3 -m pytest tests/ -q
+
+      - name: Run command runner tests
+        run: |
+          cd servers/command-runner-controlled
+          python3 -m pytest tests/ -q

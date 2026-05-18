@@ -106,16 +106,23 @@ Start with the core context documents in [docs/](docs/):
 - [MAINTAINER_GUIDANCE.md](docs/MAINTAINER_GUIDANCE.md) — review and release process
 - [AI_AGENT_GUIDE.md](docs/AI_AGENT_GUIDE.md) — guidance for AI coding agents
 - [IMPROVEMENT_GUIDE.md](docs/IMPROVEMENT_GUIDE.md) — prioritized next work
+- [CONFIG_RENDERING.md](docs/CONFIG_RENDERING.md) — generated client configs
+- [COMMAND_RUNNER_CONTROLLED.md](docs/COMMAND_RUNNER_CONTROLLED.md) — safe command execution
 
 ## Project status
 
-This repository is an early-stage, documentation-first foundation. The
-structure, capability model, and governance are in place; the catalog,
-profiles, and validation tooling are still being built toward a usable v0.1.0
-release. See [ROADMAP.md](docs/ROADMAP.md) for the plan.
+The v0.1.0 catalog and governance foundation is released: catalog entries,
+profiles, validation tooling, configuration rendering, examples, contribution
+templates, and CI are in place. Current development is focused on the optional
+first-party `servers/` layer, starting with controlled command execution for
+local coding-agent feedback loops. See [ROADMAP.md](docs/ROADMAP.md) for the
+plan.
 
-The catalog publishes an MCP server only when it is complete and functional for
-deployment.
+For the practical local setup, see
+[USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md](docs/USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md).
+
+The catalog promotes an MCP server only when it is complete, tested,
+documented, and verified deployable.
 
 ## Important: scope of safety controls
 

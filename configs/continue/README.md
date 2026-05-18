@@ -2,10 +2,9 @@
 
 Reusable MCP configuration templates for Continue-compatible clients.
 
-These templates are **starting points**, not generated output. Each references
-a profile and lists catalog entries by `ref`. A future config renderer
-(`render_config.py`, planned) will generate configs from a profile plus
-selected catalog entries; until then, copy and adapt a template by hand.
+These templates are **starting points**, not generated output. The main
+configuration path is `scripts/render_config.py`, which generates real MCP
+server blocks from catalog `runtime` metadata.
 
 ## Templates
 
@@ -16,7 +15,8 @@ selected catalog entries; until then, copy and adapt a template by hand.
 | `write-enabled.yaml` | `writer` | Workflows that need file or repo mutation |
 
 Additional profiles (`local-inspect`, `local-dev`, `executor`,
-`admin-controlled`) do not yet have templates; adapt the closest existing one.
+`admin-controlled`) do not have hand-written templates; generate them with
+`render_config.py`.
 
 ## Template format
 
@@ -24,15 +24,18 @@ Additional profiles (`local-inspect`, `local-dev`, `executor`,
 version: 1
 profile: <profile-id>
 mcpServers:
-  - ref: <catalog-entry-id>
-    mode: <read-only | read-write | restricted>
+  <catalog-entry-id>:
+    command: <command>
+    args: []
+    env: {}
 ```
 
 - `profile` must be one of the seven profiles in
   [../../profiles/](../../profiles/).
-- each `ref` must match a catalog entry id under
+- each key under `mcpServers` must match a catalog entry id under
   [../../catalog/servers/](../../catalog/servers/).
-- `mode` must not exceed what the referenced profile allows.
+- generated entries are included only when the catalog entry has a `runtime`
+  block.
 
 ## Important
 

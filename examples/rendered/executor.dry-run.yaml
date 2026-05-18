@@ -1,0 +1,17 @@
+# Dry-run sample for:
+#   python3 scripts/render_config.py --profile executor --client continue --dry-run
+#
+# Activation summary:
+#   profile: executor
+#   intent: Controlled command execution with allowlists.
+#   allowed capability classes: passive, interactive, executing
+#   write actions: profile-gated
+#   servers selected: 1
+mcpServers:
+  command-runner-controlled:
+    command: python
+    args:
+      - -m
+      - command_runner_controlled.server
+      - --config
+      - "{WORKSPACE_ROOT}/.cris-mcp-toolbelt/command-runner.config.yaml"

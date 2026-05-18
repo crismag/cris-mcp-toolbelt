@@ -25,11 +25,13 @@ For everyday local development, a practical stack is:
 | Source control | `git-controlled` | modifying | Inspect and (gated) commit |
 | Memory | `memory-local` | modifying | Persist project context and decisions |
 | Documentation | `public-fetch` | interactive | Retrieve public technical docs |
+| Checks | `command-runner-controlled` | executing | Run allowlisted tests, linters, and validators |
 | Local models | `ollama-local` | modifying | List, inspect, and run local models |
 
 This stack maps cleanly onto the `local-dev` profile: passive and interactive
 capability is available; modifying capability is profile-gated, confirmed, and
-audited.
+audited. Use the `executor` profile when the assistant needs to run
+allowlisted checks through `command-runner-controlled`.
 
 ## How local models use the tools
 
@@ -74,5 +76,7 @@ Writes, commits, and command execution remain profile-gated: the model can
 
 - [OLLAMA_LOCAL_AI_SETUP.md](OLLAMA_LOCAL_AI_SETUP.md) — setting up Ollama.
 - [MODEL_ROUTING_GUIDE.md](MODEL_ROUTING_GUIDE.md) — assigning models to tasks.
+- [USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md](USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md)
+  — a practical Continue/Ollama coding assistant workflow.
 - [../examples/local-ollama-dev-workflow.md](../examples/local-ollama-dev-workflow.md)
   — a worked example.

@@ -1,33 +1,28 @@
 # Continue MCP configuration template — format reference.
 #
 # This is the configuration format produced by scripts/render_config.py for
-# the Continue client. In normal use you generate a config rather than
+# the Continue client. In normal use, generate a config rather than
 # hand-editing one:
 #
 #   python3 scripts/render_config.py --profile <profile> --client continue \
 #       --output {TARGET_REPOSITORY}/{MCP_CONFIG_DIR}/cris-mcp-toolbelt.yaml
 #
-# Or, more conveniently, use the workspace enablement script:
+# Or use the workspace enablement script:
 #
 #   scripts/enable_for_workspace.sh {TARGET_REPOSITORY} <profile>
 #
-# Fields are the same as the generic template — see ../generic/mcp.template.yaml.
-# The hand-written templates base.readonly.yaml, sandbox.yaml, and
-# write-enabled.yaml remain as short illustrative examples.
-#
-# Note: mode and the profile are declarative intent, not runtime enforcement.
+# Note: selected servers and profile intent are declarative governance. Runtime
+# enforcement remains the responsibility of the MCP server and client.
 
-version: 1
-generated_by: cris-mcp-toolbelt render_config.py
-client: continue
-profile: local-dev
 mcpServers:
-  - ref: filesystem-controlled
-    capability_class: modifying
-    mode: inspect
-  - ref: git-controlled
-    capability_class: modifying
-    mode: inspect
-  - ref: sequential-thinking
-    capability_class: passive
-    mode: enabled
+  filesystem-controlled:
+    command: npx
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem"
+      - "{WORKSPACE_ROOT}"
+  sequential-thinking:
+    command: npx
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-sequential-thinking"

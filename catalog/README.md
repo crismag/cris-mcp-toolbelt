@@ -25,6 +25,7 @@ Every entry under `servers/` declares the following fields:
 | `license` | The server's license |
 | `transport` | `stdio`, `http`, `sse`, or `websocket` |
 | `auth_required` | Whether credentials are required |
+| `runtime` | Client-renderable command, args, and env; `null` when no deployable runtime is known |
 | `capabilities` | What the server can do |
 | `controlled_capabilities` | High-impact capabilities requiring intentional activation |
 | `capability_class` | `passive`, `interactive`, `modifying`, `executing`, or `administrative` |
@@ -40,6 +41,27 @@ Every entry under `servers/` declares the following fields:
 
 See [schema.json](schema.json) for the authoritative definition and allowed
 values.
+
+## Runtime metadata
+
+`runtime` is the field used by `scripts/render_config.py` to generate real MCP
+client blocks. For stdio servers, it has this shape:
+
+```yaml
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-filesystem"
+    - "{WORKSPACE_ROOT}"
+  env: {}
+```
+
+Use placeholders such as `{WORKSPACE_ROOT}`, `{POSTGRES_URL}`,
+`{SQLITE_DATABASE_PATH}`, and `{GITHUB_TOKEN}` instead of machine-specific
+values. If no deployable runtime is known yet, set `runtime: null`; the config
+renderer will skip that entry unless it is explicitly requested, in which case
+it reports a clear error.
 
 ## Capability classes
 

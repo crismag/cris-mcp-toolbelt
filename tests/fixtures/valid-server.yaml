@@ -11,6 +11,10 @@ source_url: https://example.com/mcp/example-controlled
 license: TBD
 transport: stdio
 auth_required: false
+runtime:
+  command: example-mcp-server
+  args: []
+  env: {}
 capability_class: modifying
 capabilities:
   - example_read

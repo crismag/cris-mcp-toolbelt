@@ -12,6 +12,11 @@ source_url: https://example.com/cris-mcp-toolbelt
 license: MIT
 transport: stdio
 auth_required: true
+runtime:
+  command: toolbelt-postgres-memory
+  args: []
+  env:
+    TOOLBELT_POSTGRES_URL: "{POSTGRES_URL}"
 capability_class: modifying
 capabilities:
   - toolbelt_memory_read

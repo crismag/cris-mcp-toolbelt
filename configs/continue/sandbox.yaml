@@ -1,7 +1,6 @@
-version: 1
-profile: sandbox
 mcpServers:
-  - ref: playwright-controlled
-    mode: restricted
-  - ref: filesystem-controlled
-    mode: read-only
+  playwright-controlled:
+    command: npx
+    args:
+      - "-y"
+      - "@playwright/mcp@latest"

@@ -26,7 +26,14 @@ keeping capability profile-gated.
 
 3. The `local-dev` profile exposes passive, interactive, and profile-gated
    modifying capability. Filesystem writes are scoped to `{WORKSPACE_ROOT}`,
-   database access is read-only, and command execution is disabled.
+   and database access is read-only.
+
+4. Use the `executor` profile when the assistant needs the validation loop:
+
+   ```bash
+   python3 scripts/render_config.py --profile executor --client continue \
+       --output {TARGET_REPOSITORY}/{MCP_CONFIG_DIR}/cris-mcp-toolbelt.executor.yaml
+   ```
 
 ## The stack
 
@@ -38,6 +45,7 @@ This workflow uses these catalog servers (see
 - `git-controlled` — inspect history, draft commits
 - `memory-local` — recall project context
 - `public-fetch` — retrieve public documentation
+- `command-runner-controlled` — run allowlisted tests, linters, and validators
 - `ollama-local` — local model access
 
 ## Steps
@@ -60,9 +68,10 @@ This workflow uses these catalog servers (see
 5. **Check public guidance.** Use `public-fetch` to confirm current API or
    library documentation if needed.
 
-6. **Run validation (optional).** Running tests and linters is an executing
-   capability. To run them through an MCP server, re-enable the workspace with
-   the `executor` profile, which permits allowlisted command execution.
+6. **Run validation.** Running tests and linters is an executing capability.
+   Use `command-runner-controlled` under the `executor` profile. Keep the
+   workspace policy in `.cris-mcp-toolbelt/command-runner.config.yaml`, and
+   review `.cris-mcp-toolbelt/audit/command-runner.jsonl` when needed.
 
 7. **Draft a commit.** Use `git-controlled` to draft a commit summary from the
    diff. Creating the commit is a profile-gated action.
@@ -80,5 +89,6 @@ This workflow uses these catalog servers (see
 
 - [../docs/OLLAMA_LOCAL_AI_SETUP.md](../docs/OLLAMA_LOCAL_AI_SETUP.md)
 - [../docs/LOCAL_OLLAMA_MCP_STACK.md](../docs/LOCAL_OLLAMA_MCP_STACK.md)
+- [../docs/USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md](../docs/USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md)
 - [../docs/MODEL_ROUTING_GUIDE.md](../docs/MODEL_ROUTING_GUIDE.md)
 - [profile-selection.md](profile-selection.md)

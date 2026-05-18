@@ -1,0 +1,24 @@
+# Example MCP client configuration for the toolbelt-postgres-memory server.
+#
+# This shows how an MCP-capable client launches the server over stdio. Adapt
+# the structure to your client's configuration format.
+#
+# The connection string is supplied via the environment using a placeholder —
+# never commit a real connection string.
+
+mcpServers:
+  - name: toolbelt-postgres-memory
+    # The console script installed by `pip install -e .`
+    command: toolbelt-postgres-memory
+    # Equivalent without the console script:
+    #   command: python3
+    #   args: ["-m", "toolbelt_postgres_memory.server"]
+    transport: stdio
+    env:
+      TOOLBELT_POSTGRES_URL: "{POSTGRES_URL}"
+      # Optional — defaults to "toolbelt"
+      # TOOLBELT_SCHEMA: "toolbelt"
+
+# This server pairs with the `local-dev` or `writer` profile. See the catalog
+# entry catalog/servers/toolbelt-postgres-memory.yaml for its capability class,
+# controlled capabilities, activation policy, and scope controls.

@@ -11,6 +11,11 @@ source_url: https://github.com/modelcontextprotocol/servers
 license: MIT
 transport: stdio
 auth_required: false
+runtime:
+  command: uvx
+  args:
+    - mcp-server-fetch
+  env: {}
 capability_class: interactive
 capabilities:
   - public_http_fetch

@@ -44,12 +44,12 @@ What it does:
 
 1. Loads the chosen profile and the catalog.
 2. Selects the catalog servers the profile may use — a server must list the
-   profile in `allowed_profiles` and its `capability_class` must be in the
-   profile's `allowed_capability_classes`. Specific servers can be chosen with
-   `--servers`.
+   profile in `allowed_profiles` and have a catalog `runtime` block. Specific
+   servers can be chosen with `--servers`; requesting a server without runtime
+   metadata is an error.
 3. Prints an **activation summary**: the profile, its allowed capability
    classes, and every selected server with its capability class and mode.
-4. Renders the configuration.
+4. Renders real MCP server blocks with `command`, `args`, and optional `env`.
 5. With `--dry-run`, prints the config and writes nothing.
 6. Otherwise, **backs up** any existing target file to `<file>.bak` before
    writing.

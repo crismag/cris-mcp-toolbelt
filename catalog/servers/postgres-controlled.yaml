@@ -12,6 +12,13 @@ source_url: https://github.com/modelcontextprotocol/servers
 license: MIT
 transport: stdio
 auth_required: true
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-postgres"
+    - "{POSTGRES_URL}"
+  env: {}
 capability_class: administrative
 capabilities:
   - postgres_schema_read

@@ -71,6 +71,33 @@
     "auth_required": {
       "type": "boolean"
     },
+    "runtime": {
+      "description": "Client-renderable runtime command for stdio MCP servers. Use null when no deployable runtime is known yet.",
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["command", "args"],
+          "properties": {
+            "command": {
+              "type": "string",
+              "minLength": 1
+            },
+            "args": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "env": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
     "capabilities": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 },

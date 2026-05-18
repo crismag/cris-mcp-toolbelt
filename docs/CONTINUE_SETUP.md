@@ -15,14 +15,25 @@ How to set up MCP servers for a Continue-compatible client using a profile.
    {PROJECT_ROOT}/scripts/enable_for_workspace.sh {TARGET_REPOSITORY} <profile>
    ```
 
-3. **Open the generated Continue MCP config** in the target repository:
+3. **Or render directly.** For Continue output with real MCP server blocks:
+
+   ```bash
+   python3 scripts/render_config.py \
+     --profile local-dev \
+     --client continue \
+     --workspace-root {TARGET_REPOSITORY} \
+     --output {TARGET_REPOSITORY}/{MCP_CONFIG_DIR}/cris-mcp-toolbelt.yaml
+   ```
+
+   Preview first with `--dry-run`.
+
+4. **Open the generated Continue MCP config** in the target repository:
 
    ```text
    {TARGET_REPOSITORY}/{MCP_CONFIG_DIR}/cris-mcp-toolbelt.yaml
    ```
 
-4. **Review it.** Confirm only the expected servers are enabled, and that each
-   server's mode does not exceed what the profile allows.
+5. **Review it.** Confirm only the expected servers are enabled.
 
 ## Templates
 
@@ -34,9 +45,12 @@ format and which profile each template targets.
 
 To combine a Continue-compatible client with local Ollama models, see
 [OLLAMA_LOCAL_AI_SETUP.md](OLLAMA_LOCAL_AI_SETUP.md) and
-[LOCAL_OLLAMA_MCP_STACK.md](LOCAL_OLLAMA_MCP_STACK.md).
+[LOCAL_OLLAMA_MCP_STACK.md](LOCAL_OLLAMA_MCP_STACK.md). For the command-runner
+feedback loop, see
+[USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md](USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md).
 
 ## Note
 
-The profile and the config's per-server modes are declarative intent. They
-describe how servers should be used; they are not enforced at runtime.
+The profile and catalog scope controls are declarative intent. They describe
+how servers should be used; runtime enforcement belongs to the MCP server and
+client.

@@ -1,7 +1,10 @@
-version: 1
-profile: readonly-research
 mcpServers:
-  - ref: public-fetch
-    mode: read-only
-  - ref: filesystem-controlled
-    mode: read-only
+  public-fetch:
+    command: uvx
+    args:
+      - mcp-server-fetch
+  sequential-thinking:
+    command: npx
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-sequential-thinking"

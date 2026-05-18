@@ -35,6 +35,7 @@ def consistency_checks(entry: dict) -> tuple[list[str], object]:
 
     entry_id = entry.get("id")
     activation = entry.get("activation_policy") or {}
+    runtime = entry.get("runtime")
 
     # activation_policy.allowed_profiles must be a subset of allowed_profiles.
     top_profiles = set(entry.get("allowed_profiles") or [])
@@ -44,6 +45,9 @@ def consistency_checks(entry: dict) -> tuple[list[str], object]:
         errors.append(
             f"activation_policy.allowed_profiles not in allowed_profiles: {sorted(extra)}"
         )
+
+    if runtime is not None and entry.get("transport") != "stdio":
+        errors.append("runtime command blocks are currently supported only for stdio")
 
     return errors, entry_id
 

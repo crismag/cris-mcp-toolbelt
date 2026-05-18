@@ -11,6 +11,12 @@ source_url: https://github.com/modelcontextprotocol/servers
 license: MIT
 transport: stdio
 auth_required: false
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-sequential-thinking"
+  env: {}
 capability_class: passive
 capabilities:
   - structured_reasoning
