@@ -59,6 +59,8 @@ bash scripts/doctor.sh
 bash scripts/test_mcp_servers.sh
 python3 scripts/validate_catalog.py
 python3 scripts/validate_profiles.py
+python3 scripts/policy_lint.py
+python3 -m pytest tests/ -q
 ```
 
 ## Pull requests
