@@ -1,0 +1,59 @@
+id: memory-local
+name: Memory Local MCP
+description: >-
+  Provides local persistent memory for project facts, decisions, preferences,
+  and reusable context. Memory is scoped to the workspace and is the
+  zero-dependency default memory option for local development.
+category: memory-and-context
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+capability_class: modifying
+capabilities:
+  - memory_read
+  - memory_write
+  - workspace_context_storage
+  - context_retrieval
+controlled_capabilities:
+  - persistent_storage
+  - sensitive_data_retention
+default_access: enabled
+allowed_profiles:
+  - local-dev
+  - writer
+activation_policy:
+  default_state: enabled_for_workspace
+  allowed_profiles:
+    - local-dev
+    - writer
+  requires_confirmation: false
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  workspace_required: true
+  memory_scope: workspace
+  blocked_record_types:
+    - secrets
+    - credentials
+    - private_keys
+    - access_tokens
+data_exposure:
+  - stored_project_context
+  - decisions_and_preferences
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Retention of sensitive data in persistent memory
+    - Memory poisoning through untrusted stored content
+  mitigations:
+    - Workspace-scoped memory with blocked sensitive record types
+    - Audit required for memory activation
+tags:
+  - memory
+  - context
+  - local-development

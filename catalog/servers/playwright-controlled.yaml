@@ -1,0 +1,64 @@
+id: playwright-controlled
+name: Playwright Controlled MCP
+description: >-
+  Lets AI agents inspect and test browser-based UIs in controlled environments.
+  Local navigation, inspection, and screenshots are sandbox-oriented defaults;
+  credentialed browsing and form submission require confirmation.
+category: browser-and-ui-testing
+provider: Microsoft
+homepage: https://playwright.dev
+source_url: https://github.com/microsoft/playwright-mcp
+license: Apache-2.0
+transport: stdio
+auth_required: false
+capability_class: interactive
+capabilities:
+  - browser_navigation
+  - screenshot_capture
+  - ui_inspection
+  - form_interaction
+  - browser_automation
+controlled_capabilities:
+  - form_submission
+  - credentialed_browsing
+  - external_side_effects
+  - network_access
+default_access: sandbox
+allowed_profiles:
+  - sandbox
+  - local-dev
+  - writer
+activation_policy:
+  default_state: sandbox
+  allowed_profiles:
+    - sandbox
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  network_policy:
+    localhost_allowed: true
+    external_domains_require_allowlist: true
+    credentialed_browsing: confirmation_required
+    form_submission: confirmation_required
+    payment_flows: disabled_by_default
+data_exposure:
+  - rendered_page_content
+  - screenshots
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - External side effects from form submission or credentialed browsing
+    - Navigation to untrusted external domains
+  mitigations:
+    - Sandbox default; external domains require an allowlist
+    - Credentialed browsing and form submission require confirmation
+    - Payment flows disabled by default
+tags:
+  - playwright
+  - browser
+  - ui-testing

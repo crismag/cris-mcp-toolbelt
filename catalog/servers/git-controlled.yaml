@@ -1,0 +1,78 @@
+id: git-controlled
+name: Git Controlled MCP
+description: >-
+  Lets AI agents inspect repository state and optionally perform controlled Git
+  operations. Status, diff, log, and show are conservative defaults; commit,
+  branch, and history operations are activated through a profile.
+category: source-control
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+capability_class: modifying
+capabilities:
+  - git_status
+  - git_diff
+  - git_log
+  - git_show
+  - git_commit
+  - git_branch
+  - git_push
+controlled_capabilities:
+  - git_commit
+  - git_push
+  - git_reset
+  - git_rebase
+  - git_checkout
+  - git_history_rewrite
+default_access: inspect
+allowed_profiles:
+  - local-inspect
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: inspect_only
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  workspace_required: true
+  allowed_operations_by_default:
+    - status
+    - diff
+    - log
+    - show
+  writer_operations:
+    - add
+    - commit
+  admin_operations:
+    - push
+    - reset
+    - rebase
+    - checkout
+data_exposure:
+  - repository_history
+  - source_files
+  - commit_metadata
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Unintended commits, pushes, or history rewrites
+    - Branch operations that disrupt collaborators
+  mitigations:
+    - Inspect-only default; commit and history operations gated by profile
+    - Push and history rewrite require the admin-controlled profile
+    - Confirmation, allowlist, and audit required for write activation
+tags:
+  - git
+  - source-control
+  - repository

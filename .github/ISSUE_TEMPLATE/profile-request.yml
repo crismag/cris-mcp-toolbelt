@@ -1,0 +1,61 @@
+name: Profile request
+description: Propose a new profile or a change to an existing profile.
+title: "[profile] <summary>"
+labels: ["profile", "proposed"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Profiles control capability exposure. Changing one changes the safety
+        posture and requires an explicit security rationale. See
+        docs/REPOSITORY_PRINCIPLES.md and docs/MAINTAINER_GUIDANCE.md.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Request kind
+      options:
+        - New profile
+        - Change to an existing profile
+    validations:
+      required: true
+  - type: input
+    id: profile
+    attributes:
+      label: Profile
+      description: Profile id (existing profile, or proposed id for a new one).
+    validations:
+      required: true
+  - type: textarea
+    id: intent
+    attributes:
+      label: Intent
+      description: What the profile is for and which workflows it serves.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed settings or change
+      description: >
+        Describe capability classes, filesystem/database/command/network modes,
+        and write_actions. For a change, describe the before and after.
+    validations:
+      required: true
+  - type: textarea
+    id: security_rationale
+    attributes:
+      label: Security rationale
+      description: >
+        What capability does this expose, why is it acceptable, and what scope
+        controls and activation policy apply?
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: Defaults stay conservative (read-only / inspect first).
+          required: true
+        - label: allow_unknown_mcp is true only for the sandbox profile.
+          required: true

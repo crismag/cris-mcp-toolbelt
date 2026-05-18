@@ -1,0 +1,32 @@
+id: local-dev
+name: Local Development
+description: Controlled local development assistance.
+intent: >-
+  Day-to-day local development assistance. Exposes passive, interactive, and
+  profile-gated modifying capability. Filesystem writes are scoped to the
+  workspace; database access defaults to read-only; command execution stays
+  disabled — use the executor profile for that.
+allow_unknown_mcp: false
+allowed_capability_classes:
+  - passive
+  - interactive
+  - modifying
+filesystem:
+  mode: read-write
+  workspace_required: true
+  allowed_paths:
+    - "{WORKSPACE_ROOT}"
+database:
+  mode: read-only
+command_execution:
+  mode: disabled
+network:
+  mode: public-readonly
+write_actions: profile-gated
+activation_defaults:
+  requires_confirmation: true
+  audit_required: true
+notes: >-
+  The common profile for local-first AI-assisted development, including local
+  Ollama workflows. Modifying capability is gated: writes require confirmation
+  and are audited.

@@ -1,0 +1,84 @@
+name: New MCP server
+description: Propose a new MCP server for the catalog.
+title: "[catalog] Add <server name>"
+labels: ["catalog", "proposed"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Use this form to propose a new catalog entry. An MCP server is added to
+        the catalog only when it is complete and functional for deployment. See
+        docs/CONTRIBUTOR_GUIDANCE.md.
+  - type: input
+    id: name
+    attributes:
+      label: Server name
+      description: Human-readable name of the MCP server.
+    validations:
+      required: true
+  - type: input
+    id: source_url
+    attributes:
+      label: Source URL
+      description: Where the server's source or documentation lives.
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License
+    validations:
+      required: true
+  - type: dropdown
+    id: capability_class
+    attributes:
+      label: Capability class
+      options:
+        - passive
+        - interactive
+        - modifying
+        - executing
+        - administrative
+    validations:
+      required: true
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: Capabilities
+      description: >
+        What can the server do? Cover authentication, filesystem, network,
+        write/mutation, and shell-execution behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: controlled_capabilities
+    attributes:
+      label: Controlled capabilities
+      description: High-impact capabilities that require intentional activation.
+    validations:
+      required: true
+  - type: textarea
+    id: security_notes
+    attributes:
+      label: Security notes
+      description: Realistic threats and concrete mitigations.
+    validations:
+      required: true
+  - type: input
+    id: suggested_profile
+    attributes:
+      label: Suggested default profile
+      description: The most restrictive profile that still works.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: The server is complete and functional for deployment.
+          required: true
+        - label: This proposal contains no secrets or private references.
+          required: true
+        - label: I suggest a conservative trust level (unknown or experimental).
+          required: true

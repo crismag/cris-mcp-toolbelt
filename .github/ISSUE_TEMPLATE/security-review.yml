@@ -1,0 +1,53 @@
+name: Security review
+description: Request a security review or report a security concern.
+title: "[security] <summary>"
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Use this form to request a security review of a catalog entry, profile,
+        or change — or to raise a security concern. Do not include secrets,
+        credentials, or private references in this issue. For a sensitive
+        vulnerability report, follow SECURITY.md instead of filing publicly.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Review kind
+      options:
+        - Catalog entry review
+        - Profile or capability change review
+        - Capability governance concern
+        - Other security concern
+    validations:
+      required: true
+  - type: input
+    id: subject
+    attributes:
+      label: Subject
+      description: The catalog entry, profile, file, or change under review.
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: Concern or scope
+      description: >
+        What should be reviewed, and why? Cover capability exposure, data
+        exposure, and any scope-control gaps.
+    validations:
+      required: true
+  - type: textarea
+    id: mitigations
+    attributes:
+      label: Suggested mitigations
+      description: Optional — proposed mitigations or scope controls.
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: This issue contains no secrets, credentials, or private references.
+          required: true

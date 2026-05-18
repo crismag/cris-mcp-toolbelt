@@ -1,0 +1,80 @@
+id: github-controlled
+name: GitHub Controlled MCP
+description: >-
+  Lets AI agents inspect GitHub repositories, issues, and pull requests, and
+  optionally perform controlled GitHub actions. Read access is the conservative
+  default; issue, pull request, and repository writes are activated through a
+  profile.
+category: source-control
+provider: GitHub
+homepage: https://github.com
+source_url: https://github.com/github/github-mcp-server
+license: MIT
+transport: stdio
+auth_required: true
+capability_class: modifying
+capabilities:
+  - github_read
+  - github_issue_read
+  - github_pr_read
+  - github_issue_write
+  - github_pr_write
+  - github_repo_write
+controlled_capabilities:
+  - issue_mutation
+  - pull_request_mutation
+  - repo_write
+  - branch_mutation
+  - token_misuse
+default_access: readonly
+allowed_profiles:
+  - readonly-research
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  credential_policy:
+    least_privilege_token: true
+    token_from_environment_only: true
+    token_committed_to_repo: false
+  allowed_operations_by_default:
+    - read_repository
+    - read_issues
+    - read_pull_requests
+  writer_operations:
+    - create_issue
+    - comment_on_issue
+    - create_pull_request
+  admin_operations:
+    - edit_repository_settings
+    - push_branch
+data_exposure:
+  - repository_content
+  - issue_and_pr_discussions
+  - account_scoped_metadata
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Misuse of a broadly scoped access token
+    - Unintended issue, pull request, or repository mutation
+  mitigations:
+    - Read-only default; mutation gated by writer or admin-controlled profile
+    - Least-privilege token sourced only from the environment
+    - Confirmation, allowlist, and audit required for write activation
+tags:
+  - github
+  - source-control
+  - issues
+  - pull-requests

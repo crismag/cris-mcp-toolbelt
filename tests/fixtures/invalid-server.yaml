@@ -1,0 +1,35 @@
+# Test fixture: a deliberately INVALID catalog entry.
+# It violates the schema in several ways and must fail validation:
+#   - capability_class uses a value not in the enum
+#   - default_access uses a value not in the enum
+#   - auth_required is a string, not a boolean
+#   - required fields are missing (homepage, license, transport,
+#     controlled_capabilities, scope_controls, data_exposure, review_status,
+#     tags)
+id: invalid-example
+name: Invalid Example MCP
+description: An intentionally invalid entry used only by the test suite.
+category: example
+provider: Community (example entry)
+source_url: https://example.com/mcp/invalid-example
+capability_class: destructive
+capabilities:
+  - example_read
+default_access: full-access
+allowed_profiles:
+  - not-a-real-profile
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - writer
+  requires_confirmation: true
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: true
+auth_required: "no"
+trust_level: experimental
+security_notes:
+  threats:
+    - Example threat
+  mitigations:
+    - Example mitigation

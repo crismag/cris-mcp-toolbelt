@@ -1,0 +1,35 @@
+id: admin-controlled
+name: Admin Controlled
+description: High-impact operations that must be explicitly configured.
+intent: >-
+  The highest-capability profile. Exposes every capability class, including
+  administrative operations such as schema admin, repository administration,
+  and history-rewriting Git operations. It is modeled so high-impact work is
+  possible — but it is never a default and must be explicitly configured.
+allow_unknown_mcp: false
+allowed_capability_classes:
+  - passive
+  - interactive
+  - modifying
+  - executing
+  - administrative
+filesystem:
+  mode: read-write
+  workspace_required: true
+  allowed_paths:
+    - "{WORKSPACE_ROOT}"
+database:
+  mode: admin
+command_execution:
+  mode: allowlisted
+  allowlist_required: true
+network:
+  mode: allowlisted
+write_actions: enabled
+activation_defaults:
+  requires_confirmation: true
+  audit_required: true
+notes: >-
+  Reserve this profile for deliberate, supervised high-impact work. Every
+  activation requires confirmation and is audited. Do not use it as a
+  convenience profile for routine development.

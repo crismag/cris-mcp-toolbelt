@@ -1,0 +1,46 @@
+# Test fixture: a schema-valid catalog entry. Not a real server.
+id: example-controlled
+name: Example Controlled MCP
+description: >-
+  A schema-valid example catalog entry used only by the test suite. It does not
+  describe a real MCP server.
+category: example
+provider: Community (example entry)
+homepage: https://example.com/mcp/example-controlled
+source_url: https://example.com/mcp/example-controlled
+license: TBD
+transport: stdio
+auth_required: false
+capability_class: modifying
+capabilities:
+  - example_read
+  - example_write
+controlled_capabilities:
+  - example_write
+default_access: readonly
+allowed_profiles:
+  - local-dev
+  - writer
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  workspace_required: true
+data_exposure:
+  - example_data
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Example threat
+  mitigations:
+    - Example mitigation
+tags:
+  - example
+  - test-fixture

@@ -1,0 +1,85 @@
+id: postgres-controlled
+name: PostgreSQL Controlled MCP
+description: >-
+  Lets AI agents inspect and optionally modify PostgreSQL databases under
+  strong connection, profile, and SQL policy controls. Schema inspection and
+  read-only queries are the conservative default; write, migration, and admin
+  statements are activated through a profile.
+category: database
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: true
+capability_class: administrative
+capabilities:
+  - postgres_schema_read
+  - postgres_select
+  - postgres_explain
+  - postgres_write
+  - postgres_migration
+  - postgres_admin
+controlled_capabilities:
+  - database_write
+  - database_admin
+  - production_data_access
+  - credential_exposure
+  - schema_mutation
+  - data_mutation
+default_access: readonly
+allowed_profiles:
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  connection_policy:
+    environment_only: true
+    no_credentials_in_repo: true
+    production_disabled_by_default: true
+  sql_policy:
+    default_mode: readonly
+    schema_metadata_allowed: true
+    allowed_statements:
+      - SELECT
+      - EXPLAIN
+    writer_statements:
+      - INSERT
+      - UPDATE
+      - DELETE
+      - CREATE
+      - ALTER
+    admin_statements:
+      - DROP
+      - GRANT
+      - REVOKE
+      - CREATE USER
+      - ALTER USER
+data_exposure:
+  - database_schema
+  - database_rows
+  - connection_metadata
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Access to production data or admin operations
+    - Exposure of database credentials
+  mitigations:
+    - Read-only SQL policy by default; write and admin statements gated by profile
+    - Credentials sourced only from the environment; production disabled by default
+    - Confirmation, allowlist, and audit required for write or admin activation
+tags:
+  - postgres
+  - database
+  - sql

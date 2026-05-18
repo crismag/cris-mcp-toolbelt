@@ -1,0 +1,53 @@
+id: sequential-thinking
+name: Sequential Thinking MCP
+description: >-
+  Gives AI agents structured reasoning, planning, decomposition, and iterative
+  problem-solving support. It produces reasoning steps only and does not access
+  the filesystem, network, or any external system.
+category: planning-and-reasoning
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+capability_class: passive
+capabilities:
+  - structured_reasoning
+  - planning
+  - problem_decomposition
+  - self_review
+controlled_capabilities: []
+default_access: enabled
+allowed_profiles:
+  - readonly-research
+  - local-inspect
+  - local-dev
+  - writer
+activation_policy:
+  default_state: enabled
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+    - writer
+  requires_confirmation: false
+  requires_allowlist: false
+  requires_scope_limit: false
+  audit_required: false
+scope_controls:
+  external_access: none
+  reasoning_only: true
+data_exposure:
+  - prompt_content
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Prompt content is processed as reasoning input
+  mitigations:
+    - No filesystem, network, or shell access
+    - Reasoning-only capability with nothing to mutate
+tags:
+  - planning
+  - reasoning
+  - low-risk

@@ -1,0 +1,74 @@
+id: sqlite-controlled
+name: SQLite Controlled MCP
+description: >-
+  Lets AI agents inspect and optionally modify local SQLite databases under
+  profile and SQL policy controls. Schema inspection and read-only queries are
+  the conservative default; write and migration statements are activated
+  through a profile.
+category: database
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+capability_class: modifying
+capabilities:
+  - sqlite_schema_read
+  - sqlite_select
+  - sqlite_explain
+  - sqlite_write
+  - sqlite_migration
+controlled_capabilities:
+  - database_write
+  - schema_mutation
+  - data_mutation
+  - data_exposure
+default_access: readonly
+allowed_profiles:
+  - local-inspect
+  - local-dev
+  - writer
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  database_path_required: true
+  sql_policy:
+    default_mode: readonly
+    allowed_statements:
+      - SELECT
+      - EXPLAIN
+      - PRAGMA
+    writer_statements:
+      - INSERT
+      - UPDATE
+      - DELETE
+      - CREATE
+      - ALTER
+    blocked_by_default:
+      - DROP
+      - VACUUM INTO
+data_exposure:
+  - database_schema
+  - database_rows
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Unintended data or schema mutation
+    - Exposure of local database contents
+  mitigations:
+    - Read-only SQL policy by default; write statements gated by profile
+    - Explicit database path required; destructive statements blocked by default
+    - Confirmation, allowlist, and audit required for write activation
+tags:
+  - sqlite
+  - database
+  - local-development

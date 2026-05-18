@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cris-mcp-toolbelt/catalog/schema.json",
+  "title": "cris-mcp-toolbelt catalog entry",
+  "description": "Schema for a single MCP server catalog entry under catalog/servers/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "description",
+    "category",
+    "provider",
+    "homepage",
+    "source_url",
+    "license",
+    "transport",
+    "auth_required",
+    "capabilities",
+    "controlled_capabilities",
+    "capability_class",
+    "default_access",
+    "allowed_profiles",
+    "activation_policy",
+    "scope_controls",
+    "data_exposure",
+    "trust_level",
+    "review_status",
+    "security_notes",
+    "tags"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+      "description": "Stable, unique identifier (kebab-case)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Capability category, for example local-development or database."
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "homepage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transport": {
+      "type": "string",
+      "enum": ["stdio", "http", "sse", "websocket"]
+    },
+    "auth_required": {
+      "type": "boolean"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "controlled_capabilities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "High-impact capabilities requiring intentional activation. May be empty."
+    },
+    "capability_class": {
+      "type": "string",
+      "enum": ["passive", "interactive", "modifying", "executing", "administrative"]
+    },
+    "default_access": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "readonly",
+        "inspect",
+        "enabled",
+        "sandbox",
+        "write_opt_in",
+        "executor_opt_in",
+        "admin_opt_in"
+      ]
+    },
+    "allowed_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "readonly-research",
+          "local-inspect",
+          "local-dev",
+          "sandbox",
+          "writer",
+          "executor",
+          "admin-controlled"
+        ]
+      },
+      "minItems": 1
+    },
+    "activation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_state",
+        "allowed_profiles",
+        "requires_confirmation",
+        "requires_allowlist",
+        "requires_scope_limit",
+        "audit_required"
+      ],
+      "properties": {
+        "default_state": { "type": "string", "minLength": 1 },
+        "allowed_profiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "readonly-research",
+              "local-inspect",
+              "local-dev",
+              "sandbox",
+              "writer",
+              "executor",
+              "admin-controlled"
+            ]
+          },
+          "minItems": 1
+        },
+        "requires_confirmation": { "type": "boolean" },
+        "requires_allowlist": { "type": "boolean" },
+        "requires_scope_limit": { "type": "boolean" },
+        "audit_required": { "type": "boolean" }
+      }
+    },
+    "scope_controls": {
+      "type": "object",
+      "description": "Path, SQL, command, network, or other limits. Shape varies by server.",
+      "minProperties": 1
+    },
+    "data_exposure": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "description": "What data the server can read or transmit."
+    },
+    "trust_level": {
+      "type": "string",
+      "enum": ["unknown", "experimental", "community", "trusted"]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": ["proposed", "reviewed", "approved", "deprecated"]
+    },
+    "security_notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["threats", "mitigations"],
+      "properties": {
+        "threats": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "mitigations": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  }
+}

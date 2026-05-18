@@ -1,0 +1,81 @@
+id: command-runner-controlled
+name: Command Runner Controlled MCP
+description: >-
+  Planned first-party server that runs development commands under strict
+  profile, allowlist, scope, and audit controls. Disabled by default; only
+  allowlisted commands are runnable, and only through an executor or writer
+  profile. This entry is proposed and the server is not yet complete or
+  deployable.
+category: command-execution
+provider: cris-mcp-toolbelt project
+homepage: https://example.com/cris-mcp-toolbelt
+source_url: https://example.com/cris-mcp-toolbelt
+license: MIT
+transport: stdio
+auth_required: false
+capability_class: executing
+capabilities:
+  - command_execution
+  - test_execution
+  - lint_execution
+  - script_execution
+  - build_execution
+controlled_capabilities:
+  - shell_execution
+  - filesystem_write
+  - network_mutation
+  - destructive_command
+  - package_publish
+  - deployment
+default_access: disabled
+allowed_profiles:
+  - executor
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - executor
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  workspace_required: true
+  command_allowlist:
+    - "python -m pytest"
+    - "python scripts/validate_catalog.py"
+    - "npm test"
+    - "npm run lint"
+    - "shellcheck"
+    - "yamllint"
+    - "git status"
+    - "git diff"
+  blocked_patterns:
+    - "rm -rf"
+    - "sudo"
+    - "chmod -R"
+    - "chown -R"
+    - "git push --force"
+    - "git reset --hard"
+    - "npm publish"
+data_exposure:
+  - command_output
+  - workspace_files
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Execution of destructive or unintended commands
+    - Exposure of environment variables or credentials through command output
+  mitigations:
+    - Disabled by default; only allowlisted commands runnable
+    - Executor or writer profile required; destructive patterns blocked
+    - Confirmation, allowlist, scope limit, and audit required
+    - First-party server; published only when complete and deployable
+tags:
+  - command-runner
+  - execution
+  - first-party

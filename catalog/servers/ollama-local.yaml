@@ -1,0 +1,67 @@
+id: ollama-local
+name: Ollama Local MCP
+description: >-
+  Exposes local Ollama model metadata and optional local generation to
+  development workflows. Listing, model info, and local generation are enabled
+  defaults; model pull and delete are controlled actions. Provider details are
+  an example placeholder pending a real, reviewed contribution.
+category: local-ai
+provider: Community (example entry)
+homepage: https://example.com/mcp/ollama-local
+source_url: https://example.com/mcp/ollama-local
+license: TBD
+transport: http
+auth_required: false
+capability_class: modifying
+capabilities:
+  - local_model_list
+  - local_model_info
+  - local_generation
+  - local_embeddings
+  - model_pull
+  - model_delete
+controlled_capabilities:
+  - model_pull
+  - model_delete
+  - large_resource_usage
+  - persistent_model_changes
+default_access: enabled
+allowed_profiles:
+  - local-dev
+  - writer
+activation_policy:
+  default_state: local_generation_allowed
+  allowed_profiles:
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  ollama_base_url: "{OLLAMA_BASE_URL}"
+  default_model_actions:
+    - list
+    - info
+    - generate
+  confirmation_required_actions:
+    - pull
+  disabled_by_default_actions:
+    - delete
+data_exposure:
+  - prompt_content
+  - local_model_metadata
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Large resource usage from model pulls or generation
+    - Persistent model changes from pull or delete actions
+  mitigations:
+    - List, info, and generate enabled; pull requires confirmation; delete disabled by default
+    - Base URL scoped through a placeholder; audit required
+    - Provider provenance and license must be verified before review advances
+tags:
+  - ollama
+  - local-ai
+  - models

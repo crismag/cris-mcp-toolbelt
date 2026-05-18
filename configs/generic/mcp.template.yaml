@@ -1,0 +1,33 @@
+# Generic MCP configuration template — format reference.
+#
+# This is the neutral configuration format produced by
+# scripts/render_config.py. It is a reference for the format; in normal use
+# you generate a config instead of hand-editing one:
+#
+#   python3 scripts/render_config.py --profile <profile> --client generic \
+#       --output {TARGET_REPOSITORY}/{MCP_CONFIG_DIR}/cris-mcp-toolbelt.yaml
+#
+# Fields:
+#   version       - config format version
+#   generated_by  - tool that produced the config
+#   client        - target client (continue | generic)
+#   profile       - the safety profile this config was rendered for
+#   mcpServers    - one entry per selected catalog server:
+#       ref               - catalog entry id (catalog/servers/<ref>.yaml)
+#       capability_class   - passive | interactive | modifying | executing | administrative
+#       mode               - the server's default_access tier
+#
+# Note: mode and the profile are declarative intent. They record how a server
+# should be used; they are not enforced at runtime.
+
+version: 1
+generated_by: cris-mcp-toolbelt render_config.py
+client: generic
+profile: readonly-research
+mcpServers:
+  - ref: public-fetch
+    capability_class: interactive
+    mode: readonly
+  - ref: sequential-thinking
+    capability_class: passive
+    mode: enabled

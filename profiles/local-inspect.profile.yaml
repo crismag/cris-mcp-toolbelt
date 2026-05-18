@@ -1,0 +1,28 @@
+id: local-inspect
+name: Local Inspect
+description: Local workspace and repository inspection only.
+intent: >-
+  Read-only inspection of a local workspace and its repositories — source
+  files, structure, git history, and local database schemas. Exposes only
+  passive capability; nothing is modified, executed, or sent over the network.
+allow_unknown_mcp: false
+allowed_capability_classes:
+  - passive
+filesystem:
+  mode: inspect
+  workspace_required: true
+  allowed_paths:
+    - "{WORKSPACE_ROOT}"
+database:
+  mode: read-only
+command_execution:
+  mode: disabled
+network:
+  mode: none
+write_actions: disabled
+activation_defaults:
+  requires_confirmation: false
+  audit_required: false
+notes: >-
+  Use when an agent should understand a local codebase without any network
+  access or mutation. A good profile for code review and onboarding tasks.

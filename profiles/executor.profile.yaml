@@ -1,0 +1,32 @@
+id: executor
+name: Executor
+description: Controlled command execution with allowlists.
+intent: >-
+  Enables executing capability — running tests, linters, validators, and other
+  development commands — strictly through an allowlist. Filesystem and database
+  access stay read-only by default; the focus of this profile is controlled
+  command execution, not mutation.
+allow_unknown_mcp: false
+allowed_capability_classes:
+  - passive
+  - interactive
+  - executing
+filesystem:
+  mode: read-only
+  workspace_required: true
+  allowed_paths:
+    - "{WORKSPACE_ROOT}"
+database:
+  mode: read-only
+command_execution:
+  mode: allowlisted
+  allowlist_required: true
+network:
+  mode: public-readonly
+write_actions: profile-gated
+activation_defaults:
+  requires_confirmation: true
+  audit_required: true
+notes: >-
+  Command execution is allowlisted: only explicitly approved commands run.
+  Destructive commands are blocked. Every command run is confirmed and audited.

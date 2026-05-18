@@ -1,0 +1,88 @@
+id: mysql-controlled
+name: MySQL / MariaDB Controlled MCP
+description: >-
+  Lets AI agents inspect and optionally modify MySQL or MariaDB application
+  databases under controlled profiles and SQL policy. Schema inspection and
+  read-only queries are the conservative default; write, migration, and admin
+  statements are activated through a profile. Provider details are an example
+  placeholder pending a real, reviewed contribution.
+category: database
+provider: Community (example entry)
+homepage: https://example.com/mcp/mysql-controlled
+source_url: https://example.com/mcp/mysql-controlled
+license: TBD
+transport: stdio
+auth_required: true
+capability_class: administrative
+capabilities:
+  - mysql_schema_read
+  - mysql_select
+  - mysql_explain
+  - mysql_write
+  - mysql_migration
+  - mysql_admin
+controlled_capabilities:
+  - database_write
+  - database_admin
+  - production_data_access
+  - credential_exposure
+  - schema_mutation
+  - data_mutation
+default_access: readonly
+allowed_profiles:
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  connection_policy:
+    environment_only: true
+    no_credentials_in_repo: true
+    production_disabled_by_default: true
+  sql_policy:
+    default_mode: readonly
+    allowed_statements:
+      - SELECT
+      - SHOW
+      - DESCRIBE
+      - EXPLAIN
+    writer_statements:
+      - INSERT
+      - UPDATE
+      - DELETE
+      - CREATE
+      - ALTER
+    admin_statements:
+      - DROP
+      - GRANT
+      - REVOKE
+      - CREATE USER
+      - ALTER USER
+data_exposure:
+  - database_schema
+  - database_rows
+  - connection_metadata
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Access to production application data or admin operations
+    - Exposure of database credentials
+  mitigations:
+    - Read-only SQL policy by default; write and admin statements gated by profile
+    - Credentials sourced only from the environment; production disabled by default
+    - Provider provenance and license must be verified before review advances
+tags:
+  - mysql
+  - mariadb
+  - database
+  - sql

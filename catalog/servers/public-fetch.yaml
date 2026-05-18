@@ -1,0 +1,58 @@
+id: public-fetch
+name: Public Fetch MCP
+description: >-
+  Lets AI agents retrieve public documentation, public references, package
+  docs, and technical pages. Limited to public URLs and read-only retrieval by
+  default; it does not submit forms or use authenticated requests.
+category: public-research
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+capability_class: interactive
+capabilities:
+  - public_http_fetch
+  - public_docs_retrieval
+  - web_content_summarization
+controlled_capabilities:
+  - network_access
+  - untrusted_content_ingestion
+  - file_download
+default_access: readonly
+allowed_profiles:
+  - readonly-research
+  - local-dev
+  - writer
+activation_policy:
+  default_state: public_readonly
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+    - writer
+  requires_confirmation: false
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  network_policy:
+    public_urls_only: true
+    authenticated_requests: false
+    form_submission: false
+    download_to_workspace: confirmation_required
+data_exposure:
+  - retrieved_public_content
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Ingestion of untrusted web content into the agent context
+    - Unintended downloads or requests beyond public retrieval
+  mitigations:
+    - Public URLs only; no authenticated requests or form submission
+    - Downloads to the workspace require confirmation
+tags:
+  - fetch
+  - documentation
+  - public-research

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cris-mcp-toolbelt/profiles/schema.json",
+  "title": "cris-mcp-toolbelt safety profile",
+  "description": "Schema for a profile file under profiles/ (<id>.profile.yaml).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "description",
+    "intent",
+    "allow_unknown_mcp",
+    "allowed_capability_classes",
+    "filesystem",
+    "database",
+    "command_execution",
+    "network",
+    "write_actions",
+    "activation_defaults",
+    "notes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "enum": [
+        "readonly-research",
+        "local-inspect",
+        "local-dev",
+        "sandbox",
+        "writer",
+        "executor",
+        "admin-controlled"
+      ]
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "intent": { "type": "string", "minLength": 1 },
+    "allow_unknown_mcp": { "type": "boolean" },
+    "allowed_capability_classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["passive", "interactive", "modifying", "executing", "administrative"]
+      }
+    },
+    "filesystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["none", "inspect", "read-only", "read-write"]
+        },
+        "workspace_required": { "type": "boolean" },
+        "allowed_paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["none", "read-only", "read-write", "admin"]
+        }
+      }
+    },
+    "command_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["disabled", "allowlisted", "enabled"]
+        },
+        "allowlist_required": { "type": "boolean" }
+      }
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["none", "public-readonly", "allowlisted"]
+        }
+      }
+    },
+    "write_actions": {
+      "type": "string",
+      "enum": ["disabled", "profile-gated", "enabled"]
+    },
+    "activation_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requires_confirmation", "audit_required"],
+      "properties": {
+        "requires_confirmation": { "type": "boolean" },
+        "audit_required": { "type": "boolean" }
+      }
+    },
+    "notes": { "type": "string", "minLength": 1 }
+  }
+}

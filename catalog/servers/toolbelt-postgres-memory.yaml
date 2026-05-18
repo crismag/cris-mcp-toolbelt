@@ -1,0 +1,75 @@
+id: toolbelt-postgres-memory
+name: Toolbelt PostgreSQL Memory MCP
+description: >-
+  Planned first-party server that uses PostgreSQL as the internal memory,
+  audit, catalog metadata, and workspace registry backend for the toolbelt.
+  This entry is proposed and describes intended behavior; the server is not yet
+  complete or deployable and is not published for use.
+category: memory-and-context
+provider: cris-mcp-toolbelt project
+homepage: https://example.com/cris-mcp-toolbelt
+source_url: https://example.com/cris-mcp-toolbelt
+license: MIT
+transport: stdio
+auth_required: true
+capability_class: modifying
+capabilities:
+  - toolbelt_memory_read
+  - toolbelt_memory_write
+  - tool_audit_logging
+  - workspace_registry
+  - model_usage_tracking
+controlled_capabilities:
+  - persistent_storage
+  - database_write
+  - schema_migration
+  - privacy_leakage
+default_access: enabled
+allowed_profiles:
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: enabled_for_toolbelt_tables
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: false
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  database_scope: toolbelt_owned
+  allowed_schemas:
+    - toolbelt
+  allowed_tables:
+    - workspaces
+    - memory_records
+    - tool_audit_events
+    - model_usage
+    - database_connections
+  blocked_record_types:
+    - secrets
+    - credentials
+    - private_keys
+    - access_tokens
+data_exposure:
+  - stored_toolbelt_memory
+  - tool_audit_events
+  - workspace_registry
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Retention of sensitive data in a persistent backend
+    - Writes outside the toolbelt-owned schema
+  mitigations:
+    - Scope limited to the toolbelt-owned schema and allowlisted tables
+    - Blocked sensitive record types; audit required
+    - First-party server; published only when complete and deployable
+tags:
+  - memory
+  - postgres
+  - audit
+  - first-party
