@@ -1,7 +1,7 @@
 version: 1
 profile: sandbox
 mcpServers:
-  - ref: unknown-sandbox
+  - ref: playwright-controlled
     mode: restricted
-  - ref: local-files
+  - ref: filesystem-controlled
     mode: read-only

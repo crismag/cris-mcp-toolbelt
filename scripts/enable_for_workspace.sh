@@ -33,7 +33,7 @@ placeholders:
   TOOLBELT_HOME: {TOOLBELT_HOME}
   TARGET_WORKSPACE: {TARGET_WORKSPACE}
 mcpServers:
-  - catalog_ref: local-files
+  - catalog_ref: filesystem-controlled
     default_access: read-only
     allowed_paths:
       - {TARGET_WORKSPACE}

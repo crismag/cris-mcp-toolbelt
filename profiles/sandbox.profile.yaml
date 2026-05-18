@@ -1,14 +1,30 @@
 id: sandbox
-description: Isolated profile for testing unknown MCP servers.
-default_access: read-only
+name: Sandbox
+description: Experimental or unknown MCP servers in limited scope.
+intent: >-
+  The only profile that permits unknown or unreviewed MCP servers. Capability
+  is limited to passive and interactive classes, filesystem access is
+  inspect-only, and network access requires an allowlist. Use it to evaluate a
+  server before promoting it to a reviewed profile.
 allow_unknown_mcp: true
+allowed_capability_classes:
+  - passive
+  - interactive
 filesystem:
-  mode: read-only
+  mode: inspect
+  workspace_required: true
   allowed_paths:
-    - "{TARGET_WORKSPACE}"
+    - "{WORKSPACE_ROOT}"
 database:
-  mode: read-only
-online_mcp_policy:
-  trusted_provider_only: false
-  retrieval_only_default: true
+  mode: none
+command_execution:
+  mode: disabled
+network:
+  mode: allowlisted
 write_actions: disabled
+activation_defaults:
+  requires_confirmation: true
+  audit_required: true
+notes: >-
+  Unknown servers belong here and nowhere else. Confirmation and audit are
+  required so that experimental server behavior is observable.

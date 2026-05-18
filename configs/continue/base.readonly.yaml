@@ -1,7 +1,7 @@
 version: 1
 profile: readonly-research
 mcpServers:
-  - ref: trusted-retrieval
+  - ref: public-fetch
     mode: read-only
-  - ref: local-files
+  - ref: filesystem-controlled
     mode: read-only

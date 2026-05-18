@@ -32,7 +32,9 @@ Online MCP servers are treated as untrusted unless they are:
 
 ## Sensitive Data Rule
 
-Do not send private source code, credentials, customer data, church/member data, financial data, or production database content to unknown online MCP servers.
+Do not send private source code, credentials, personal or customer data,
+organizational records, financial data, or production database content to
+unknown online MCP servers.
 
 ## Token Rule
 

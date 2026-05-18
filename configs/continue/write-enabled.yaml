@@ -1,7 +1,7 @@
 version: 1
 profile: writer
 mcpServers:
-  - ref: trusted-retrieval
-    mode: read-write
-  - ref: local-files
+  - ref: public-fetch
+    mode: read-only
+  - ref: filesystem-controlled
     mode: read-write

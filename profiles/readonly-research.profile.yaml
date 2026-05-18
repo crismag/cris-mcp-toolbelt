@@ -1,14 +1,30 @@
 id: readonly-research
-description: Default safe profile for public research workflows.
-default_access: read-only
+name: Read-Only Research
+description: Public documentation and read-only research.
+intent: >-
+  Safe default profile for documentation lookup, public research, and
+  read-only retrieval. Exposes only passive and interactive capability and
+  enables no modifying, executing, or administrative capability.
 allow_unknown_mcp: false
+allowed_capability_classes:
+  - passive
+  - interactive
 filesystem:
   mode: read-only
+  workspace_required: true
   allowed_paths:
-    - "{TARGET_WORKSPACE}"
+    - "{WORKSPACE_ROOT}"
 database:
-  mode: read-only
-online_mcp_policy:
-  trusted_provider_only: true
-  retrieval_only_default: true
+  mode: none
+command_execution:
+  mode: disabled
+network:
+  mode: public-readonly
 write_actions: disabled
+activation_defaults:
+  requires_confirmation: false
+  audit_required: false
+notes: >-
+  The most conservative profile. Suitable for any workspace. Use a higher
+  profile only when a workflow genuinely needs modifying, executing, or
+  administrative capability.

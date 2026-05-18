@@ -13,5 +13,5 @@ Reference config templates in:
 Enable in a workspace via:
 
 ```bash
-{TOOLBELT_HOME}/scripts/enable_for_workspace.sh {TARGET_WORKSPACE} readonly-research
+{PROJECT_ROOT}/scripts/enable_for_workspace.sh {TARGET_REPOSITORY} readonly-research
 ```

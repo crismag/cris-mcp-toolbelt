@@ -1,14 +1,32 @@
 id: writer
-description: Explicit write-enabled profile for controlled workflows.
-default_access: limited-write
+name: Writer
+description: Explicit file, database, or repo mutation under scope controls.
+intent: >-
+  Enables modifying capability — file writes, database writes, and repository
+  mutation — under workspace and scope controls. Command execution stays
+  disabled; use the executor profile for that. This profile is an intentional
+  choice, never a default.
 allow_unknown_mcp: false
+allowed_capability_classes:
+  - passive
+  - interactive
+  - modifying
 filesystem:
   mode: read-write
+  workspace_required: true
   allowed_paths:
-    - "{TARGET_WORKSPACE}"
+    - "{WORKSPACE_ROOT}"
 database:
-  mode: read-only
-online_mcp_policy:
-  trusted_provider_only: true
-  retrieval_only_default: false
-write_actions: explicit-only
+  mode: read-write
+command_execution:
+  mode: disabled
+network:
+  mode: public-readonly
+write_actions: enabled
+activation_defaults:
+  requires_confirmation: true
+  audit_required: true
+notes: >-
+  Select this profile only when a workflow genuinely needs to write files,
+  databases, or repositories. All write actions require confirmation and are
+  audited.

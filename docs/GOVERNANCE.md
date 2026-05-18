@@ -8,7 +8,8 @@
 
 ## Change control
 
-Changes to profiles, catalog trust levels, or write permissions require maintainer review with explicit security rationale.
+Changes to profiles, catalog trust levels, or write permissions require
+maintainer review with explicit security rationale.
 
 ## Contribution requirements
 

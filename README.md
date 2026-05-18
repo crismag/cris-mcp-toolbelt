@@ -1,53 +1,135 @@
 # cris-mcp-toolbelt
 
-A generic, reusable, community-expandable MCP toolbelt for AI-assisted development.
+A public, reusable, profile-driven **MCP capability control toolkit** for
+AI-assisted development workflows.
 
-This repository is designed for public use and includes:
+`cris-mcp-toolbelt` helps developers safely configure, catalog, validate,
+activate, and govern Model Context Protocol (MCP) servers for local and remote
+AI coding agents — including local Ollama-based development environments.
 
-- Curated MCP tool categories
-- Reusable configuration templates for public MCP servers
-- A place for custom MCP tools and helper scripts
-- A safe workspace enablement layer for any repository
-- A companion toolbelt for local AI workflows using Ollama (or similar runtimes)
-- Governance, contribution standards, catalog metadata, and security review expectations
+It turns MCP usage from:
 
-## Safety-first defaults
+> random tools connected directly to an AI agent
 
-- Public-repository friendly, generic examples only
-- No hardcoded secrets
-- Read-only by default
-- Online MCPs limited to trusted providers or inward/retrieval-only defaults
-- Filesystem access path-restricted
-- Database access read-only by default
-- Write actions require an explicit write-enabled profile
-- Unknown MCP servers allowed only in sandbox profile
+into:
+
+> cataloged tools + safety profiles + reusable configs + validation + governance
+
+## Philosophy: configurable control, not crippled tools
+
+MCP servers are powerful capability providers. The goal of this toolbelt is not
+to remove that power — it is to make it **intentional**.
+
+Some capabilities are passive and can be enabled by default. Others are
+high-impact and should be activated deliberately through profiles, scope limits,
+confirmations, allowlists, and audit records.
+
+> Capabilities are not excluded. They are classified, scoped, configured,
+> activated, and audited.
+
+## What this repository provides
+
+- **Catalog** — MCP server entries with standardized capability, activation, and
+  scope metadata.
+- **Profiles** — named safety profiles that control capability exposure.
+- **Client configuration templates** — reusable starting points for MCP-capable
+  clients.
+- **Helper scripts** — small, dependency-light scripts to enable a workspace,
+  validate the catalog, and check the local environment.
+- **Documentation and governance** — capability model, security model,
+  contribution standards, and review expectations.
+
+## Capability model
+
+Every capability is assigned a class so risk is described consistently:
+
+| Class | Meaning |
+| --- | --- |
+| `passive` | Reads or inspects information only |
+| `interactive` | Interacts with systems without mutation by default |
+| `modifying` | Changes files, databases, repositories, or app state |
+| `executing` | Runs code, commands, scripts, or build tools |
+| `administrative` | Performs high-impact admin operations |
+
+## Profiles
+
+Capability is granted through named profiles:
+
+| Profile | Intent |
+| --- | --- |
+| `readonly-research` | Public documentation and read-only research |
+| `local-inspect` | Local workspace and repository inspection only |
+| `local-dev` | Controlled local development assistance |
+| `sandbox` | Experimental or unknown MCP servers in limited scope |
+| `writer` | Explicit file, database, or repo mutation under scope controls |
+| `executor` | Controlled command execution with allowlists |
+| `admin-controlled` | High-impact operations that must be explicitly configured |
+
+Defaults stay conservative: passive capability may be enabled where low-risk;
+modifying, executing, and administrative capability requires an intentional
+profile choice.
 
 ## Quick start
 
 ```bash
 cp .env.example .env
-{TOOLBELT_HOME}/scripts/enable_for_workspace.sh {TARGET_WORKSPACE} readonly-research
-{TOOLBELT_HOME}/scripts/doctor.sh
-{TOOLBELT_HOME}/scripts/test_mcp_servers.sh
-python3 {TOOLBELT_HOME}/scripts/validate_catalog.py
+{PROJECT_ROOT}/scripts/enable_for_workspace.sh {TARGET_REPOSITORY} readonly-research
+{PROJECT_ROOT}/scripts/doctor.sh
+{PROJECT_ROOT}/scripts/test_mcp_servers.sh
+python3 {PROJECT_ROOT}/scripts/validate_catalog.py
 ```
 
-Example placeholder paths:
+Placeholders used throughout this repository:
 
-- `{WORKSPACE_ROOT}/cris-mcp-toolbelt`
-- `{TARGET_WORKSPACE}/.continue/mcpServers/cris-mcp-toolbelt.yaml`
-- `{TOOLBELT_HOME}/scripts/enable_for_workspace.sh {TARGET_WORKSPACE} readonly-research`
+`{PROJECT_ROOT}`, `{WORKSPACE_ROOT}`, `{TARGET_REPOSITORY}`, `{USER_HOME}`,
+`{MCP_CONFIG_DIR}`, `{DATABASE_URL}`, `{POSTGRES_URL}`, `{MYSQL_URL}`,
+`{OLLAMA_BASE_URL}`, `{GITHUB_TOKEN}`.
 
 ## Repository layout
 
-- `docs/` architecture, setup, security, policy, governance, roadmap
-- `configs/continue/` reusable Continue MCP templates
-- `profiles/` safety profiles (read-only, sandbox, write-enabled)
-- `catalog/` MCP catalog entries with metadata and security notes
-- `scripts/` safe helper scripts
-- `examples/` usage examples
-- `tools/` custom tool guidance
+- `docs/` — context, architecture, security, governance, and setup docs
+- `catalog/` — MCP catalog entries with capability and security metadata
+- `profiles/` — safety profiles that gate capability exposure
+- `configs/` — reusable client configuration templates
+- `scripts/` — helper scripts for validation and workspace enablement
+- `examples/` — usage examples
+- `tools/` — custom tool guidance
+
+## Documentation
+
+Start with the core context documents in [docs/](docs/):
+
+- [CONTEXT.md](docs/CONTEXT.md) — what this repository is and why it exists
+- [REPOSITORY_PRINCIPLES.md](docs/REPOSITORY_PRINCIPLES.md) — principles guiding all work
+- [ROADMAP.md](docs/ROADMAP.md) — planned milestones
+- [CONTRIBUTOR_GUIDANCE.md](docs/CONTRIBUTOR_GUIDANCE.md) — how to contribute
+- [MAINTAINER_GUIDANCE.md](docs/MAINTAINER_GUIDANCE.md) — review and release process
+- [AI_AGENT_GUIDE.md](docs/AI_AGENT_GUIDE.md) — guidance for AI coding agents
+- [IMPROVEMENT_GUIDE.md](docs/IMPROVEMENT_GUIDE.md) — prioritized next work
+
+## Project status
+
+This repository is an early-stage, documentation-first foundation. The
+structure, capability model, and governance are in place; the catalog,
+profiles, and validation tooling are still being built toward a usable v0.1.0
+release. See [ROADMAP.md](docs/ROADMAP.md) for the plan.
+
+The catalog publishes an MCP server only when it is complete and functional for
+deployment.
+
+## Important: scope of safety controls
+
+Profiles, activation policy, and scope controls are **declarative intent**. This
+repository does not sit between an AI client and an MCP server at runtime — it
+configures and governs, it does not enforce. These controls describe how a
+capability *should* be activated and scoped; they are organizational and
+advisory, not a runtime sandbox.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and
+[docs/CONTRIBUTOR_GUIDANCE.md](docs/CONTRIBUTOR_GUIDANCE.md).
 
 ## License
 
-MIT. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).

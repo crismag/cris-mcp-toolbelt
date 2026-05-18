@@ -5,12 +5,12 @@ The enablement script creates/updates MCP config for a target workspace using a 
 Command:
 
 ```bash
-{TOOLBELT_HOME}/scripts/enable_for_workspace.sh {TARGET_WORKSPACE} readonly-research
+{PROJECT_ROOT}/scripts/enable_for_workspace.sh {TARGET_REPOSITORY} readonly-research
 ```
 
 Output file:
 
-`{TARGET_WORKSPACE}/.continue/mcpServers/cris-mcp-toolbelt.yaml`
+`{TARGET_REPOSITORY}/{MCP_CONFIG_DIR}/cris-mcp-toolbelt.yaml`
 
 Safety guarantees:
 

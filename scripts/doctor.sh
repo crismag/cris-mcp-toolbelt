@@ -11,7 +11,8 @@ required=(
   ".env.example"
   "docs/SECURITY_MODEL.md"
   "profiles/readonly-research.profile.yaml"
-  "catalog/trusted-retrieval.yaml"
+  "catalog/schema.json"
+  "catalog/servers/filesystem-controlled.yaml"
 )
 
 missing=0
