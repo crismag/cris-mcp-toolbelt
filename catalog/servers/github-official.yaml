@@ -1,0 +1,87 @@
+id: github-official
+name: GitHub Official MCP Server
+description: >-
+  GitHub's official MCP server for repository, issue, pull request, Actions,
+  and security workflows. Token scope and server toolsets determine the real
+  blast radius.
+category: source-control
+provider: GitHub
+homepage: https://github.com
+source_url: https://github.com/github/github-mcp-server
+license: MIT
+transport: stdio
+auth_required: true
+runtime:
+  command: docker
+  args:
+    - run
+    - "-i"
+    - "--rm"
+    - "-e"
+    - GITHUB_PERSONAL_ACCESS_TOKEN
+    - "-e"
+    - GITHUB_READ_ONLY
+    - ghcr.io/github/github-mcp-server
+  env:
+    GITHUB_PERSONAL_ACCESS_TOKEN: "{GITHUB_TOKEN}"
+    GITHUB_READ_ONLY: "1"
+capability_class: modifying
+capabilities:
+  - repository_read
+  - issue_read
+  - pull_request_read
+  - issue_write
+  - pull_request_write
+  - workflow_actions
+controlled_capabilities:
+  - issue_mutation
+  - pull_request_mutation
+  - workflow_actions
+  - repository_admin
+  - token_misuse
+default_access: disabled
+allowed_profiles:
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  credential_policy:
+    token_from_environment_only: true
+    least_privilege_token: true
+    read_only_default: true
+  recommended_environment:
+    GITHUB_READ_ONLY: "1"
+  recommended_toolsets:
+    - repos
+    - issues
+    - pull_requests
+data_exposure:
+  - repository_content
+  - issue_and_pr_discussions
+  - account_metadata
+  - workflow_metadata
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Misuse of a broadly scoped GitHub token
+    - Unintended issue, pull request, workflow, or repository mutation
+  mitigations:
+    - Keep read-only mode enabled by default
+    - Use least-privilege tokens and narrow GitHub toolsets
+    - Require writer or admin-controlled activation for mutations
+tags:
+  - github
+  - official
+  - source-control
+

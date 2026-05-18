@@ -108,6 +108,7 @@ Start with the core context documents in [docs/](docs/):
 - [IMPROVEMENT_GUIDE.md](docs/IMPROVEMENT_GUIDE.md) — prioritized next work
 - [CONFIG_RENDERING.md](docs/CONFIG_RENDERING.md) — generated client configs
 - [COMMAND_RUNNER_CONTROLLED.md](docs/COMMAND_RUNNER_CONTROLLED.md) — safe command execution
+- [MCP_SOURCE_CATALOG_EXPANSION.md](docs/MCP_SOURCE_CATALOG_EXPANSION.md) — adding external MCP sources safely
 
 ## Project status
 

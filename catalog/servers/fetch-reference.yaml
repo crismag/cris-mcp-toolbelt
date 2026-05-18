@@ -1,0 +1,62 @@
+id: fetch-reference
+name: Fetch Reference MCP
+description: >-
+  Official MCP reference server for fetching web content and converting it into
+  LLM-friendly text or Markdown.
+category: web-reading
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: uvx
+  args:
+    - mcp-server-fetch
+  env: {}
+capability_class: interactive
+capabilities:
+  - public_web_fetch
+  - html_to_markdown
+  - url_content_retrieval
+controlled_capabilities:
+  - network_access
+  - public_web_fetch
+default_access: readonly
+allowed_profiles:
+  - readonly-research
+  - local-dev
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+  requires_confirmation: false
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: false
+scope_controls:
+  network_policy:
+    public_web_only: true
+    block_private_ip_ranges: true
+    domain_allowlist_recommended: true
+    request_limits_recommended: true
+data_exposure:
+  - requested_urls
+  - fetched_page_content
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Fetching private network URLs or metadata endpoints
+    - Prompt injection from fetched web content
+  mitigations:
+    - Block private IP ranges and local metadata endpoints
+    - Prefer domain allowlists and request limits
+    - Treat fetched content as untrusted input
+tags:
+  - fetch
+  - web-reading
+  - reference
+

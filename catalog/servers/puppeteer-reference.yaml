@@ -1,0 +1,63 @@
+id: puppeteer-reference
+name: Puppeteer Reference MCP
+description: >-
+  Archived MCP reference Puppeteer server for browser automation. It is
+  cataloged as historical and should be replaced or locally reviewed before use.
+category: browser-automation
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers-archived
+license: MIT
+transport: stdio
+auth_required: false
+runtime: null
+capability_class: executing
+capabilities:
+  - browser_navigation
+  - screenshot_capture
+  - page_interaction
+  - browser_automation
+controlled_capabilities:
+  - browser_automation
+  - local_file_access
+  - network_access
+  - screenshot_capture
+  - credentialed_browsing
+default_access: disabled
+allowed_profiles:
+  - executor
+  - writer
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - executor
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  browser_policy:
+    allowed_hosts_required: true
+    credentialed_browsing_disabled_by_default: true
+    file_access_disabled_by_default: true
+data_exposure:
+  - rendered_page_content
+  - screenshots
+  - visited_urls
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Browser-driven actions on authenticated sites
+    - Capture of sensitive DOM content or screenshots
+    - Upstream source is archived and unmaintained
+  mitigations:
+    - Runtime left null pending replacement or local validation
+    - Use Playwright MCP or another maintained browser server when possible
+    - Require executor or writer activation with host allowlists
+tags:
+  - puppeteer
+  - browser
+  - archived-reference
+

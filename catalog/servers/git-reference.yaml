@@ -1,0 +1,74 @@
+id: git-reference
+name: Git Reference MCP
+description: >-
+  Official MCP reference Git server for repository inspection and Git
+  operations. Mutation-capable repository actions must remain profile gated.
+category: source-control
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: uvx
+  args:
+    - mcp-server-git
+    - "--repository"
+    - "{WORKSPACE_ROOT}"
+  env: {}
+capability_class: modifying
+capabilities:
+  - git_status
+  - git_diff
+  - git_log
+  - git_branch_inspection
+  - git_repository_operations
+controlled_capabilities:
+  - commit_creation
+  - branch_modification
+  - repository_mutation
+  - destructive_git_operation
+default_access: inspect
+allowed_profiles:
+  - local-dev
+  - writer
+activation_policy:
+  default_state: inspect_only
+  allowed_profiles:
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  workspace_required: true
+  repository_path: "{WORKSPACE_ROOT}"
+  default_operations:
+    - status
+    - diff
+    - log
+  blocked_operations:
+    - reset_hard
+    - force_push
+    - clean_force
+data_exposure:
+  - repository_history
+  - source_diffs
+  - branch_metadata
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Unintended commits, branch changes, or destructive Git operations
+    - Exposure of private repository history or diffs
+  mitigations:
+    - Default to status, diff, and log style inspection
+    - Require writer profile, confirmation, allowlist, and audit for mutation
+    - Block destructive Git operations by policy
+tags:
+  - git
+  - reference
+  - source-control
+

@@ -1,0 +1,67 @@
+id: supabase-mcp
+name: Supabase MCP Server
+description: >-
+  Supabase community MCP server and hosted MCP endpoint for project-scoped
+  database, docs, debugging, development, functions, storage, and branching
+  operations.
+category: cloud-database
+provider: Supabase
+homepage: https://supabase.com/mcp
+source_url: https://github.com/supabase-community/supabase-mcp
+license: Apache-2.0
+transport: http
+auth_required: true
+runtime: null
+capability_class: administrative
+capabilities:
+  - supabase_docs_search
+  - database_inspection
+  - sql_execution
+  - migration_application
+  - edge_function_management
+  - project_management
+controlled_capabilities:
+  - database_write
+  - project_admin
+  - auth_admin
+  - edge_function_access
+  - production_data_access
+default_access: disabled
+allowed_profiles:
+  - admin-controlled
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  supabase_policy:
+    project_ref_required: true
+    read_only_mode_recommended: true
+    feature_groups_must_be_explicit: true
+    production_projects_disabled_by_default: true
+data_exposure:
+  - project_metadata
+  - database_schema
+  - database_rows
+  - service_logs
+  - edge_function_source
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - SQL execution or migrations can modify production data and schema
+    - Project administration can create cost or availability impact
+    - Broad organization access if project scoping is omitted
+  mitigations:
+    - Disabled by default; admin-controlled profile only
+    - Require project_ref scoping and read_only mode for initial setup
+    - Enable only necessary feature groups
+tags:
+  - supabase
+  - database
+  - cloud
+

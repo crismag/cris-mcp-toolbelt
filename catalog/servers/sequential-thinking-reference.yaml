@@ -1,0 +1,56 @@
+id: sequential-thinking-reference
+name: Sequential Thinking Reference MCP
+description: >-
+  Official MCP reference server for structured, reflective multi-step thinking.
+  It does not need access to local files, credentials, or remote services.
+category: reasoning-support
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-sequential-thinking"
+  env: {}
+capability_class: passive
+capabilities:
+  - structured_reasoning
+  - planning_context
+  - thought_sequence_tracking
+controlled_capabilities: []
+default_access: enabled
+allowed_profiles:
+  - readonly-research
+  - local-dev
+activation_policy:
+  default_state: enabled
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+  requires_confirmation: false
+  requires_allowlist: false
+  requires_scope_limit: false
+  audit_required: false
+scope_controls:
+  external_access: none
+  credential_access: none
+data_exposure:
+  - user_prompts
+  - reasoning_steps
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Reasoning traces may contain sensitive prompt content
+  mitigations:
+    - Do not provide secrets or private data in prompts sent to the tool
+    - Keep it separate from tools with file, network, or execution access
+tags:
+  - reasoning
+  - reference
+  - planning
+

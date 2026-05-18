@@ -1,0 +1,67 @@
+id: memory-reference
+name: Memory Reference MCP
+description: >-
+  Official MCP reference memory server providing persistent knowledge graph
+  style memory for entities, relations, and observations.
+category: memory-and-context
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-memory"
+  env: {}
+capability_class: modifying
+capabilities:
+  - persistent_memory
+  - entity_storage
+  - relation_storage
+  - memory_recall
+controlled_capabilities:
+  - persistent_storage
+  - privacy_leakage
+  - memory_mutation
+default_access: disabled
+allowed_profiles:
+  - readonly-research
+  - local-dev
+  - writer
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  memory_policy:
+    project_scoped_memory_required: true
+    sensitive_record_types_blocked: true
+    retention_policy_required: true
+data_exposure:
+  - stored_entities
+  - stored_relations
+  - user_supplied_memory
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Long-lived memory can preserve secrets or private user data
+    - Cross-project memory can leak context between unrelated workspaces
+  mitigations:
+    - Disabled by default pending local review
+    - Require project scoping and retention rules
+    - Block secrets and sensitive record types from memory writes
+tags:
+  - memory
+  - reference
+  - context
+

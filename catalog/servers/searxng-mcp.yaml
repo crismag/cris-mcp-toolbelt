@@ -1,0 +1,61 @@
+id: searxng-mcp
+name: SearXNG MCP
+description: >-
+  Community MCP server for querying a configured SearXNG instance and returning
+  web search results to an MCP client.
+category: web-search
+provider: SecretiveShell
+homepage: https://docs.searxng.org/
+source_url: https://github.com/SecretiveShell/MCP-searxng
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: uvx
+  args:
+    - mcp-searxng
+  env:
+    SEARXNG_URL: "{SEARXNG_URL}"
+capability_class: interactive
+capabilities:
+  - web_search
+  - search_result_retrieval
+controlled_capabilities:
+  - web_search
+  - network_access
+default_access: readonly
+allowed_profiles:
+  - readonly-research
+  - local-dev
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+  requires_confirmation: false
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: false
+scope_controls:
+  network_policy:
+    prefer_self_hosted_instance: true
+    public_instance_allowed: explicit_opt_in
+    query_logging_risk: documented
+data_exposure:
+  - search_queries
+  - public_web_results
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Search queries may reveal private project or user intent
+    - Public SearXNG instances may log queries or apply unknown policies
+  mitigations:
+    - Prefer a trusted self-hosted SearXNG instance
+    - Avoid sending secrets, tokens, or private identifiers in search queries
+    - Document the configured SearXNG endpoint before enabling
+tags:
+  - searxng
+  - web-search
+  - community
+

@@ -1,0 +1,61 @@
+id: sqlite-reference
+name: SQLite Reference MCP
+description: >-
+  Archived MCP reference SQLite server for local database exploration and SQL
+  execution. It is cataloged as historical and should be treated as unmaintained.
+category: database
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers-archived
+license: MIT
+transport: stdio
+auth_required: false
+runtime: null
+capability_class: modifying
+capabilities:
+  - sqlite_query
+  - sqlite_schema_inspection
+  - sql_execution
+controlled_capabilities:
+  - write_sql
+  - schema_mutation
+  - data_exfiltration
+default_access: readonly
+allowed_profiles:
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  database_policy:
+    read_only_credentials_by_default: true
+    database_path_allowlist_required: true
+    production_data_disabled_by_default: true
+data_exposure:
+  - local_database_schema
+  - local_database_rows
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Exfiltration of sensitive local application data
+    - Destructive SQL or schema mutation
+    - Upstream source is archived and unmaintained
+  mitigations:
+    - Runtime left null pending replacement or local validation
+    - Use read-only databases or disposable copies
+    - Require writer or admin-controlled activation for mutation
+tags:
+  - sqlite
+  - database
+  - archived-reference
+

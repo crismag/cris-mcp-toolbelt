@@ -35,6 +35,11 @@ How to set up MCP servers for a Continue-compatible client using a profile.
 
 5. **Review it.** Confirm only the expected servers are enabled.
 
+Continue client rendering includes only catalog entries that have a verified
+`runtime` command. Entries with `runtime: null` still appear in governance
+summaries, but are skipped for real Continue configs until a deployable access
+route is selected.
+
 ## Templates
 
 Reusable templates live in [../configs/continue/](../configs/continue/). See
@@ -48,6 +53,9 @@ To combine a Continue-compatible client with local Ollama models, see
 [LOCAL_OLLAMA_MCP_STACK.md](LOCAL_OLLAMA_MCP_STACK.md). For the command-runner
 feedback loop, see
 [USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md](USE_WITH_LOCAL_OLLAMA_CODING_ASSISTANT.md).
+
+For external MCP source cataloging and review status, see
+[MCP_SOURCE_CATALOG_EXPANSION.md](MCP_SOURCE_CATALOG_EXPANSION.md).
 
 ## Note
 

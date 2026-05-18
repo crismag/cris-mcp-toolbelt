@@ -1,0 +1,49 @@
+version: 1
+
+workspace:
+  root: "/mnt/ai/workspaces/cris-mcp-toolbelt"
+  require_workspace: true
+
+execution:
+  default_timeout_seconds: 120
+  max_output_bytes: 200000
+  dry_run: false
+
+allowlist:
+  commands:
+    - id: pytest
+      command: "python -m pytest"
+      allowed_args:
+        - "tests/"
+        - "-q"
+      description: "Run Python tests"
+
+    - id: validate-catalog
+      command: "python scripts/validate_catalog.py"
+      allowed_args: []
+      description: "Validate MCP catalog"
+
+    - id: validate-profiles
+      command: "python scripts/validate_profiles.py"
+      allowed_args: []
+      description: "Validate MCP profiles"
+
+    - id: policy-lint
+      command: "python scripts/policy_lint.py"
+      allowed_args: []
+      description: "Run cross-artifact policy lint"
+
+blocked_patterns:
+  - "rm -rf"
+  - "sudo"
+  - "chmod -R"
+  - "chown -R"
+  - "git push --force"
+  - "git reset --hard"
+  - "npm publish"
+  - "curl | sh"
+  - "wget | sh"
+
+audit:
+  enabled: true
+  path: ".cris-mcp-toolbelt/audit/command-runner.jsonl"

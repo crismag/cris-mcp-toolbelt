@@ -1,0 +1,71 @@
+id: obsidian-mcp
+name: Obsidian MCP
+description: >-
+  Community MCP server that connects to Obsidian through the Obsidian Local
+  REST API plugin to read, search, append, patch, or delete vault notes.
+category: knowledge-management
+provider: Markus Pfundstein
+homepage: https://obsidian.md
+source_url: https://github.com/MarkusPfundstein/mcp-obsidian
+license: MIT
+transport: stdio
+auth_required: true
+runtime:
+  command: uvx
+  args:
+    - mcp-obsidian
+  env:
+    OBSIDIAN_API_KEY: "{OBSIDIAN_API_KEY}"
+    OBSIDIAN_HOST: "{OBSIDIAN_HOST}"
+    OBSIDIAN_PORT: "{OBSIDIAN_PORT}"
+capability_class: modifying
+capabilities:
+  - note_search
+  - note_read
+  - note_append
+  - note_patch
+  - note_delete
+controlled_capabilities:
+  - note_write
+  - vault_modification
+  - private_note_access
+  - note_deletion
+default_access: disabled
+allowed_profiles:
+  - local-dev
+  - writer
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  vault_policy:
+    vault_allowlist_required: true
+    destructive_operations_disabled_by_default: true
+    local_rest_api_required: true
+  credential_policy:
+    api_key_from_environment_only: true
+data_exposure:
+  - private_notes
+  - vault_paths
+  - note_metadata
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Private notes can contain personal data, credentials, or strategy
+    - Note patch or delete operations can damage the vault
+  mitigations:
+    - Disabled by default and scoped to explicitly allowed vaults
+    - Require writer activation, confirmation, and audit for mutations
+    - Use an Obsidian API key from the environment only
+tags:
+  - obsidian
+  - notes
+  - knowledge-management
+

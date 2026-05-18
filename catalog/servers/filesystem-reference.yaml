@@ -1,0 +1,74 @@
+id: filesystem-reference
+name: Filesystem Reference MCP
+description: >-
+  Official MCP reference filesystem server for reading and optionally writing
+  files under explicitly allowed paths. Cataloged separately from the local
+  controlled entry to track the upstream reference implementation.
+category: local-development
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-filesystem"
+    - "{WORKSPACE_ROOT}"
+  env: {}
+capability_class: modifying
+capabilities:
+  - filesystem_read
+  - filesystem_write
+  - directory_listing
+  - file_search
+controlled_capabilities:
+  - filesystem_write
+  - bulk_file_modification
+  - private_file_access
+default_access: inspect
+allowed_profiles:
+  - local-inspect
+  - local-dev
+  - writer
+activation_policy:
+  default_state: inspect_only
+  allowed_profiles:
+    - local-inspect
+    - local-dev
+    - writer
+  requires_confirmation: true
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  workspace_required: true
+  path_restrictions:
+    - "{WORKSPACE_ROOT}"
+  blocked_paths:
+    - "{USER_HOME}/.ssh"
+    - "{USER_HOME}/.aws"
+    - "**/.env"
+    - "**/*secret*"
+    - "**/*token*"
+data_exposure:
+  - source_files
+  - local_project_configuration
+  - documentation
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Reading private files outside the intended project scope
+    - Modifying or deleting files unintentionally
+  mitigations:
+    - Scope runtime paths to the workspace root
+    - Block sensitive paths such as .env, .ssh, .aws, secret, and token files
+    - Require writer profile and audit for write activation
+tags:
+  - filesystem
+  - reference
+  - local-development
+

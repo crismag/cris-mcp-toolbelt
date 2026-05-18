@@ -68,6 +68,16 @@ The renderer supports placeholders including `{WORKSPACE_ROOT}`,
 `{OLLAMA_BASE_URL}`, and `{GITHUB_TOKEN}`. For real client modes, unresolved
 placeholders fail clearly unless `--allow-unresolved-placeholders` is passed.
 
+Only core path placeholders are hard failures by default. Token and service
+placeholders such as `{FIRECRAWL_API_KEY}`, `{SEARXNG_URL}`,
+`{OBSIDIAN_API_KEY}`, or `{SUPABASE_ACCESS_TOKEN}` may remain in rendered client
+configs as setup prompts; do not replace them with real secrets in committed
+files.
+
+Entries with `runtime: null` are skipped in real client modes unless explicitly
+requested. This is intentional for archived, remote-only, or not-yet-reviewed
+sources.
+
 ## Profile Enforcement
 
 The renderer refuses to render a server not listed in the selected profile's

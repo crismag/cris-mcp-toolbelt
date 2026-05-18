@@ -1,0 +1,62 @@
+id: context7
+name: Context7 MCP
+description: >-
+  Upstash Context7 MCP server for up-to-date library and framework
+  documentation in AI coding workflows.
+category: documentation-access
+provider: Upstash
+homepage: https://context7.com
+source_url: https://github.com/upstash/context7
+license: MIT
+transport: stdio
+auth_required: false
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@upstash/context7-mcp@latest"
+  env: {}
+capability_class: interactive
+capabilities:
+  - documentation_lookup
+  - package_context_retrieval
+  - code_example_retrieval
+controlled_capabilities:
+  - external_docs_lookup
+  - network_access
+default_access: readonly
+allowed_profiles:
+  - readonly-research
+  - local-dev
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+  requires_confirmation: false
+  requires_allowlist: false
+  requires_scope_limit: true
+  audit_required: false
+scope_controls:
+  network_policy:
+    documentation_queries_only: true
+    package_names_may_leave_workspace: true
+data_exposure:
+  - package_names
+  - documentation_queries
+  - dependency_context
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Documentation queries can reveal dependency or project interests
+    - Returned examples may be stale, unsafe, or injected
+  mitigations:
+    - Treat returned documentation and code examples as advisory
+    - Do not include secrets or private source text in documentation queries
+    - Pin or review package behavior before relying on generated code
+tags:
+  - context7
+  - documentation
+  - coding-assistant
+

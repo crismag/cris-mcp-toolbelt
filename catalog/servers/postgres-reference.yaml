@@ -1,0 +1,64 @@
+id: postgres-reference
+name: PostgreSQL Reference MCP
+description: >-
+  Archived MCP reference PostgreSQL server for schema inspection and SQL
+  execution. It is cataloged as historical and should not be treated as actively
+  maintained.
+category: database
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers-archived
+license: MIT
+transport: stdio
+auth_required: true
+runtime: null
+capability_class: modifying
+capabilities:
+  - postgres_query
+  - schema_inspection
+  - sql_execution
+controlled_capabilities:
+  - write_sql
+  - schema_mutation
+  - production_data_access
+  - data_exfiltration
+default_access: readonly
+allowed_profiles:
+  - local-dev
+  - writer
+  - admin-controlled
+activation_policy:
+  default_state: readonly
+  allowed_profiles:
+    - local-dev
+    - writer
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  database_policy:
+    read_only_credentials_by_default: true
+    production_databases_disabled_by_default: true
+    connection_string_from_environment_only: true
+data_exposure:
+  - database_schema
+  - database_rows
+  - query_results
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Exfiltration of sensitive application or production data
+    - Destructive SQL or schema mutation
+    - Upstream source is archived and unmaintained
+  mitigations:
+    - Runtime left null pending replacement or local validation
+    - Use read-only credentials and non-production databases by default
+    - Require writer or admin-controlled activation for mutation
+tags:
+  - postgres
+  - database
+  - archived-reference
+

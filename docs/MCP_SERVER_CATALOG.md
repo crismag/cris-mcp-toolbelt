@@ -15,6 +15,11 @@ metadata, including `id`, `name`, `description`, `category`, `provider`,
 `activation_policy`, `scope_controls`, `trust_level`, `review_status`, and
 `security_notes`.
 
+External MCP sources are cataloged using the same schema. See
+[MCP_SOURCE_CATALOG_EXPANSION.md](MCP_SOURCE_CATALOG_EXPANSION.md) for source
+verification rules, trust lifecycle, and the difference between reference
+entries and project-owned `*-controlled` entries.
+
 ## Rules
 
 - Conservative defaults: read-only and inspect first.
@@ -25,8 +30,10 @@ metadata, including `id`, `name`, `description`, `category`, `provider`,
   `review_status: proposed`.
 - Runtime metadata uses placeholders instead of machine-specific paths,
   connection strings, or tokens.
-- An MCP server is published in the catalog only when it is complete and
-  functional for deployment.
+- External sources may be cataloged as `review_status: proposed` before local
+  MCP smoke testing, but they must remain conservative until tested.
+- Runtime metadata is included only when the access route is verified; otherwise
+  use `runtime: null`.
 
 ## Validation
 

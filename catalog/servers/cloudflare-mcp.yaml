@@ -1,0 +1,66 @@
+id: cloudflare-mcp
+name: Cloudflare MCP Servers
+description: >-
+  Cloudflare's remote MCP server collection for documentation, Workers,
+  observability, Radar, browser rendering, logs, GraphQL, audit logs, and other
+  Cloudflare product areas.
+category: cloud-platform
+provider: Cloudflare
+homepage: https://developers.cloudflare.com/
+source_url: https://github.com/cloudflare/mcp-server-cloudflare
+license: Apache-2.0
+transport: http
+auth_required: true
+runtime: null
+capability_class: administrative
+capabilities:
+  - cloudflare_docs
+  - workers_management
+  - observability_queries
+  - browser_rendering
+  - cloudflare_api_access
+  - audit_log_queries
+controlled_capabilities:
+  - cloud_resource_mutation
+  - account_admin
+  - token_misuse
+  - cost_generating_operations
+  - browser_rendering
+default_access: disabled
+allowed_profiles:
+  - admin-controlled
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - admin-controlled
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  cloudflare_policy:
+    server_endpoint_must_be_explicit: true
+    least_privilege_api_token_required: true
+    paid_features_must_be_confirmed: true
+    production_accounts_disabled_by_default: true
+data_exposure:
+  - cloudflare_account_metadata
+  - logs_and_analytics
+  - worker_configuration
+  - audit_logs
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Cloud resource mutation or deletion
+    - Token leakage and account-wide access
+    - Cost-generating operations or production impact
+  mitigations:
+    - Disabled by default and admin-controlled only
+    - Use least-privilege Cloudflare tokens and explicit endpoints
+    - Prefer read-only documentation or analytics endpoints for initial setup
+tags:
+  - cloudflare
+  - cloud
+  - administrative
+

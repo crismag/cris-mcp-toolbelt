@@ -1,0 +1,71 @@
+id: playwright-mcp
+name: Playwright MCP
+description: >-
+  Microsoft Playwright MCP server for browser automation using structured
+  accessibility snapshots, navigation, form interaction, and optional HTTP mode.
+category: browser-automation
+provider: Microsoft
+homepage: https://playwright.dev
+source_url: https://github.com/microsoft/playwright-mcp
+license: Apache-2.0
+transport: stdio
+auth_required: false
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - "@playwright/mcp@latest"
+  env: {}
+capability_class: executing
+capabilities:
+  - browser_navigation
+  - accessibility_snapshot
+  - screenshot_capture
+  - form_interaction
+  - browser_automation
+controlled_capabilities:
+  - browser_automation
+  - local_file_access
+  - network_access
+  - screenshot_capture
+  - credentialed_browsing
+default_access: disabled
+allowed_profiles:
+  - executor
+  - writer
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - executor
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  browser_policy:
+    allowed_hosts_required: true
+    credentialed_browsing_disabled_by_default: true
+    file_access_disabled_by_default: true
+    form_submission_confirmation_required: true
+data_exposure:
+  - rendered_page_content
+  - accessibility_snapshots
+  - screenshots
+  - visited_urls
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Browser-driven actions on authenticated sites
+    - Screenshot or DOM capture of sensitive information
+    - Network access to untrusted or internal hosts
+  mitigations:
+    - Disabled by default and activatable only by executor or writer
+    - Restrict allowed hosts and disable file access unless needed
+    - Require confirmation for form submission and credentialed browsing
+tags:
+  - playwright
+  - browser
+  - testing
+

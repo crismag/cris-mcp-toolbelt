@@ -1,0 +1,61 @@
+id: slack-reference
+name: Slack Reference MCP
+description: >-
+  Archived MCP reference Slack server for channel and message access. It is
+  cataloged as historical and requires a Slack token to use.
+category: productivity
+provider: Model Context Protocol
+homepage: https://modelcontextprotocol.io
+source_url: https://github.com/modelcontextprotocol/servers-archived
+license: MIT
+transport: stdio
+auth_required: true
+runtime: null
+capability_class: modifying
+capabilities:
+  - slack_channel_read
+  - slack_message_read
+  - slack_message_write
+  - workspace_metadata
+controlled_capabilities:
+  - message_posting
+  - private_channel_access
+  - token_misuse
+  - data_exfiltration
+default_access: disabled
+allowed_profiles:
+  - readonly-research
+  - writer
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - readonly-research
+    - writer
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: true
+scope_controls:
+  slack_policy:
+    bot_token_from_environment_only: true
+    channel_allowlist_required: true
+    posting_disabled_by_default: true
+data_exposure:
+  - slack_messages
+  - channel_membership
+  - workspace_metadata
+trust_level: unknown
+review_status: proposed
+security_notes:
+  threats:
+    - Exfiltration of private channel or direct-message content
+    - Unintended message posting to a workspace
+    - Upstream source is archived and unmaintained
+  mitigations:
+    - Runtime left null pending maintained replacement or local validation
+    - Use channel allowlists and least-privilege bot tokens
+    - Require writer activation and audit for posting
+tags:
+  - slack
+  - productivity
+  - archived-reference

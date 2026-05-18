@@ -1,0 +1,71 @@
+id: firecrawl-mcp
+name: Firecrawl MCP Server
+description: >-
+  Official Firecrawl MCP server for web search, scraping, crawling, extraction,
+  and page interaction through the Firecrawl service or a self-hosted endpoint.
+category: web-scraping
+provider: Firecrawl
+homepage: https://firecrawl.dev
+source_url: https://github.com/firecrawl/firecrawl-mcp-server
+license: MIT
+transport: stdio
+auth_required: true
+runtime:
+  command: npx
+  args:
+    - "-y"
+    - firecrawl-mcp
+  env:
+    FIRECRAWL_API_KEY: "{FIRECRAWL_API_KEY}"
+capability_class: interactive
+capabilities:
+  - web_search
+  - web_scraping
+  - web_crawling
+  - structured_extraction
+  - page_interaction
+controlled_capabilities:
+  - web_scraping
+  - web_crawling
+  - external_api_usage
+  - network_access
+default_access: disabled
+allowed_profiles:
+  - readonly-research
+  - local-dev
+activation_policy:
+  default_state: disabled
+  allowed_profiles:
+    - readonly-research
+    - local-dev
+  requires_confirmation: true
+  requires_allowlist: true
+  requires_scope_limit: true
+  audit_required: false
+scope_controls:
+  network_policy:
+    domain_allowlist_recommended: true
+    crawl_depth_limit_required: true
+    external_api_key_required: true
+  cost_controls:
+    usage_quota_recommended: true
+data_exposure:
+  - visited_urls
+  - scraped_page_content
+  - search_queries
+  - extraction_prompts
+trust_level: experimental
+review_status: proposed
+security_notes:
+  threats:
+    - Large crawls can create cost, privacy, or terms-of-service exposure
+    - Scraped pages can contain prompt injection or sensitive content
+  mitigations:
+    - Disabled by default; require explicit activation
+    - Use domain allowlists, crawl limits, and service quotas
+    - Treat scraped content as untrusted input
+tags:
+  - firecrawl
+  - web-scraping
+  - search
+
